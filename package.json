@@ -1,0 +1,19 @@
+{
+  "name": "payment-tracker-app",
+  "description": "",
+  "author": "Viktoriia Vasyliv",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.0",
+    "prettier": "^3.0.0"
+  },
+  "scripts": {
+    "dev": "concurrently \"cd server && nodemon index.js\" \"cd client && npm run dev\" \"cd client && npm run sass\"",
+    "dev-client": "concurrently \"cd client && npm run dev\" \"cd client && npm run sass\""
+  }
+}
