@@ -1,0 +1,54 @@
+{
+  "users": [
+    {
+      "name": "Maksym",
+      "classes": [
+        {
+          "name": "Painting",
+          "recurring": "monthly",
+          "lastPayment": "11/11/2023",
+          "nextPayment": "11/12/2023",
+          "price": "400 uah"
+        },
+        {
+          "name": "Pool",
+          "recurring": "monthly",
+          "lastPayment": "11/11/2023",
+          "nextPayment": "11/11/2023",
+          "price": "500 uah"
+        },
+        {
+          "name": "RoboSTEM",
+          "recurring": "monthly",
+          "lastPayment": "11/11/2023",
+          "nextPayment": "11/11/2023",
+          "price": "600 uah"
+        },
+        {
+          "name": "Music",
+          "recurring": "monthly",
+          "lastPayment": "11/11/2023",
+          "price": "250 uah"
+        },
+        {
+          "name": "Karate",
+          "recurring": "monthly",
+          "lastPayment": "11/11/2023",
+          "price": "1100 uah"
+        }
+      ]
+    },
+    {
+      "name": "Eva",
+      "classes": [
+        {
+          "name": "Pool",
+          "recurring": "monthly",
+          "lastPayment": "23/11/2023",
+          "nextPayment": "23/12/2023",
+          "price": "900 uah"
+        }
+      ]
+    }
+  ]
+}
