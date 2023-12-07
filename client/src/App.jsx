@@ -1,23 +1,16 @@
 import './App.css'
-import {useEffect, useState} from "react";
+import {useQuery} from "react-query";
 import getUsers from "./api/getUsers";
 
 function App() {
-  // const { isLoading, data: users } = useQuery('users', getUsers)
-  const [users, setUsers] = useState([]);
-
-  useEffect(() => {
-    getUsers()
-        .then(users => setUsers(users))
-        .catch((error) => console.error('Error fetching users:', error));
-  }, []);
-
-  return (
+  const {isLoading, data: users} = useQuery('users', getUsers);
+    return (
       <>
-        <h1> USERS</h1>
-        {users.map((user) => (
-            <div key={user.name}><p> {user.name} </p></div>
-        ))}
+        {isLoading ? (<p className="loading"> Loading... </p>) : (
+            users.map((user) => (
+                <div key={user.name}><p> {user.name} </p></div>
+            ))
+        )}
 
       </>
   )
