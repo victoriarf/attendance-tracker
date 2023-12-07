@@ -2,13 +2,14 @@ const express = require('express');
 const config = require('config');
 const app = express();
 const mongoose = require("mongoose");
-const fs = require('fs');
+const cors = require("cors");
 const router = require('./router');
 const morgan = require('morgan');
 
 const PORT = process.env.PORT || config.get('port') || 5000;
 const mongoDbUrl = config.get('mongoDbUrl');
 
+app.use(cors());
 app.use(morgan('tiny'));
 app.use(router);
 

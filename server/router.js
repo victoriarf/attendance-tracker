@@ -4,7 +4,8 @@ const fs = require('fs');
 
 
 const data = fs.readFileSync(`${__dirname}/dev-data/data.json`, 'utf-8');
-const dataObj = JSON.parse(data);
+
+router.use(express.json());
 
 
 // API
@@ -12,17 +13,27 @@ router.get('/api', (req, res) => {
   res.send(data);
 });
 
-router.get('/', (req, res) => {
-  res.send('Hey');
-});
-
 router.post('/login', require('./routes/loginRoute'));
 
 router.get('/profile', require('./routes/getProfile'));
 
+// Users
+router.route('/users')
+    .get(require('./routes/getUsers'))
+    .post(require('./routes/addUser'))
+
+router.route('/users/:id')
+    .put(require('./routes/updateUser'))
+    .delete(require('./routes/deleteUser'))
+
+// Classes
 router.route('/classes/:userName')
     .get(require('./routes/getUserClasses'))
-    .post(require('./routes/addUserClasses'));
+    .post(require('./routes/addUserClasses'))
+
+router.route('/classes/:userName/:id')
+    .put(require('./routes/updateUserClass'))
+    .delete(require('./routes/deleteUserClass'))
 
 
 module.exports = router;
