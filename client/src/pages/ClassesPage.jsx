@@ -4,6 +4,7 @@ import {useQuery} from "react-query";
 import getUsers from "../api/getUsers";
 import './ClassesPage.scss';
 import Calendar from "../components/Calendar";
+import ClassButton from "../components/Class-button";
 
 function ClassesPage() {
   const {isLoading, data: users} = useQuery('users', getUsers);
@@ -36,11 +37,7 @@ function ClassesPage() {
                     spacing={1}
                 >
                   {users.map((user) => (
-                      <div key={user.name}>
-                        <Button className="classButton" variant='contained' size={"medium"}> {user.name}</Button>
-                        <FormControlLabel control={<Checkbox color='default' className='classCheckbox' size={"large"}/>}
-                            label=''/>
-                      </div>
+                      <div key={user.name}> <ClassButton user={user}/></div>
                   ))}
                 </Stack>
 
