@@ -2,9 +2,9 @@ import {Box, Button, Checkbox, FormControlLabel, Stack} from "@mui/material";
 import React from "react";
 import {useQuery} from "react-query";
 import getUsers from "../api/getUsers";
-import './ClassesPage.scss';
 import Calendar from "../components/Calendar";
 import ClassButton from "../components/Class-button";
+import './ClassesPage.scss';
 
 function ClassesPage() {
   const {isLoading, data: users} = useQuery('users', getUsers);
@@ -27,6 +27,7 @@ function ClassesPage() {
               </Stack>
 
               <Stack
+                  className='classesPage'
                   direction="row"
                   justifyContent="start"
                   spacing={1}

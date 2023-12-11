@@ -1,5 +1,6 @@
 import React from "react";
 import {Button, Checkbox, FormControlLabel} from "@mui/material";
+import './Class-button.css';
 
 export const ClassButton = (props) => {
   return (

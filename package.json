@@ -13,7 +13,7 @@
     "prettier": "^3.0.0"
   },
   "scripts": {
-    "dev": "concurrently \"cd server && nodemon index.js\" \"cd client && npm run dev\" \"cd client && npm run sass\"",
-    "dev-client": "concurrently \"cd client && npm run dev\" \"cd client && npm run sass\""
+    "dev": "concurrently \"cd server && nodemon index.js\" \"cd client && npm run dev\"",
+    "dev-client": "concurrently \"cd client && npm run dev\""
   }
 }
