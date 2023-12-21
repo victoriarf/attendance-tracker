@@ -1,6 +1,6 @@
-const API_URL = 'http://localhost:5000';
+const API_URL = 'http://localhost:5000'; // TODO
 
-export default () => {
+export function getUsers () {
   return fetch(`${API_URL}/users`, {
     method: 'GET',
     headers: {

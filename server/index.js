@@ -5,6 +5,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const router = require('./router');
 const morgan = require('morgan');
+const removeNonExistingClasses = require("./scripts/removeNonExistingClasses");
+
 
 const PORT = process.env.PORT || config.get('port') || 5000;
 const mongoDbUrl = config.get('mongoDbUrl');
@@ -18,7 +20,10 @@ mongoose.connect(mongoDbUrl)
   .then(() => {
     console.log('Connected to Mongoose');
     app.listen(PORT, () => {
-      console.log(`server listening on port ${PORT}`)
+      console.log(`server listening on port ${PORT}`);
+
+      // TODO: probably the script can be moved somewhere
+      // removeNonExistingClasses().then(() => console.log('UPDATED---------------------------------'));
     });
   })
   .catch(e => console.log('Error in MONGOOSE CONNECT: ', e));

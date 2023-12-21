@@ -27,11 +27,11 @@ router.route('/users/:id')
     .delete(require('./routes/deleteUser'))
 
 // Classes
-router.route('/classes/:userName')
+router.route('/classes/:userId')
     .get(require('./routes/getUserClasses'))
     .post(require('./routes/addUserClasses'))
 
-router.route('/classes/:userName/:id')
+router.route('/classes/:userId/:id')
     .put(require('./routes/updateUserClass'))
     .delete(require('./routes/deleteUserClass'))
 
