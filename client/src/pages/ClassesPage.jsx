@@ -18,7 +18,8 @@ function ClassesPage() {
   const queryClient = useQueryClient()
   let [activeUser, setActiveUser] = useState(undefined);
 
-  const {isLoading, data: users} = useQuery('users', ()=> getUsers());
+
+  const {isLoading, data: users} = useQuery('users', () => getUsers());
 
   users && users[0] && (activeUser = users[0]);
 
@@ -32,8 +33,7 @@ function ClassesPage() {
 
 
   function onUserChanged($event, newValue) {
-    setActiveUser(newValue);
-    // queryClient.invalidateQueries({ queryKey: ['classes'] })
+    activeUser = newValue;
   }
 
   return (
@@ -48,18 +48,19 @@ function ClassesPage() {
               >
 
                 <div>activeUser {JSON.stringify(activeUser)}</div>
-                <div>Users: {JSON.stringify(users)}</div>
+                <div>Us8ers: {JSON.stringify(users)}</div>
+                <div>Classes: {JSON.stringify(classes)}</div>
 
                 <TabContext value={activeUser?._id}>
-                  <TabList defaultValue={2} onChange={onUserChanged} centered color='primary'>
+                  <TabList  onChange={onUserChanged} centered color='primary'>
                     {users?.map((user) => (
-                        <Tab key={user.id} label={user.name} value={user}/>
+                        <Tab key={user._id} label={user.name} value={user._id}/>
                     ))}
                   </TabList>
 
                   <div>
                     {users?.map((user) => (
-                        <TabPanel key={user.id} value={user} index={0}>
+                        <TabPanel key={user._id} value={user._id} index={0}>
 
                           <Stack
                               className='classesPage'

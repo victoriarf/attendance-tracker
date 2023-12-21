@@ -14,7 +14,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
       <QueryClientProvider client={queryClient}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <App/>
-          <ReactQueryDevtoolsPanel setIsOpen={true} />
+          {/*<ReactQueryDevtoolsPanel setIsOpen={true} />*/}
         </LocalizationProvider>
       </QueryClientProvider>
     </React.StrictMode>,
