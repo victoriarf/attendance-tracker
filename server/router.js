@@ -31,7 +31,7 @@ router.route('/classes/:userId')
     .get(require('./routes/classes/getUserClasses'))
     .post(require('./routes/classes/addUserClasses'))
 
-router.route('/classes/:userId/:id')
+router.route('/classes/:id')
     .put(require('./routes/classes/updateUserClass'))
     .delete(require('./routes/classes/deleteUserClass'))
 

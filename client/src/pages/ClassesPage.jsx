@@ -10,6 +10,7 @@ import './ClassesPage.scss';
 import {TabContext, TabList, TabPanel} from '@mui/lab';
 import ClassInfo from "../components/Class-info";
 
+const CLASSES_CHECKED_KEY = 'classesChecked';
 /**
  * Tabs - experimental API https://mui.com/material-ui/react-tabs/
  * @returns {JSX.Element}
@@ -37,6 +38,21 @@ function ClassesPage() {
     setActiveUser(newValue);
   }
 
+
+  const initialCheckedState = JSON.parse(localStorage.getItem(CLASSES_CHECKED_KEY)) || {};
+  const [checkedState, setCheckedState] = useState(initialCheckedState);
+
+  useEffect(() => {
+    localStorage.setItem(CLASSES_CHECKED_KEY, JSON.stringify(checkedState));
+  }, [checkedState]);
+
+  const handleCheckboxChange = (classId) => {
+    setCheckedState((prevState) => ({
+      ...prevState,
+      [classId]: !prevState[classId] || false,
+    }));
+  };
+
   return (
       <>
         {isLoading ? (<p className="loading"> Loading... </p>) : (
@@ -47,10 +63,6 @@ function ClassesPage() {
                   alignItems="center"
                   spacing={0.5}
               >
-
-                {/*<div><strong> activeUser </strong> {JSON.stringify(activeUserId)}</div>*/}
-                {/*<div><strong> Users: </strong> {JSON.stringify(users)}</div>*/}
-                {/*<div><strong> Classes:</strong> {JSON.stringify(classes)}</div>*/}
 
                 <TabContext value={activeUserId}>
                   <TabList onChange={onUserChanged} centered color='primary'>
@@ -74,8 +86,12 @@ function ClassesPage() {
                                 justifyContent="start"
                                 spacing={1}
                             >
-                              {classes?.map((user) => (
-                                  <div key={user.name}><ClassButton user={user}/></div>
+                              {classes?.map((userClass) => (
+                                  <div key={userClass.name}>
+                                    <ClassButton
+                                        userClass={userClass}
+                                        isChecked={checkedState[userClass._id] || false}
+                                        onCheckboxChange={() => handleCheckboxChange(userClass._id)}/></div>
                               ))}
                             </Stack>
 

@@ -22,7 +22,19 @@ const ClassSchema = new mongoose.Schema({
   nextPayment: {
     type: Date,
     required: false,
-  }
+  },
+  schedule: [
+    {
+      day: {
+        type: String,
+        enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+        required: true,
+      },
+      time: {
+        type: String,
+      },
+    },
+  ],
 })
 
 const ClassModel = mongoose.model('Class', ClassSchema);
