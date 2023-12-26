@@ -1,5 +1,5 @@
-const ClassModel = require('../models/class.model');
-const UserModel = require("../models/user.model");
+const ClassModel = require('../../models/class.model');
+const UserModel = require("../../models/user.model");
 
 module.exports = async (req, res) => {
   try {

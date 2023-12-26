@@ -8,6 +8,7 @@ import Calendar from "../components/Calendar";
 import ClassButton from "../components/Class-button";
 import './ClassesPage.scss';
 import {TabContext, TabList, TabPanel} from '@mui/lab';
+import ClassInfo from "../components/Class-info";
 
 /**
  * Tabs - experimental API https://mui.com/material-ui/react-tabs/
@@ -79,7 +80,7 @@ function ClassesPage() {
                             </Stack>
 
                             <Box> <Calendar/> </Box>
-                            <Box> Info </Box>
+                            <Box> <ClassInfo></ClassInfo> </Box>
                           </Stack>
 
                         </TabPanel>
