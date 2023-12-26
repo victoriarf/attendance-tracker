@@ -6,15 +6,16 @@ const ClassSchema = new mongoose.Schema({
     required: true,
   },
   price: {
-    type: String,
-    required: true,
+    amount: {
+      type: Number,
+      required: true,
+    },
+    recurring: {
+      type: String,
+      enum: ['monthly', 'individual'], // 'per-session'
+      required: true,
+    }
   },
-  recurring: {
-    type: String,
-    enum: ['monthly', 'weekly', 'other'],
-    required: true,
-  },
-
   lastPayment: {
     type: Date,
     required: false,

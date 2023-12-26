@@ -1,13 +1,36 @@
+import {Grid, Stack} from "@mui/material";
 import React from "react";
+import './Class-info.scss';
 
 function ClassInfo(props) {
+  function setPriceRecurring(recurring) {
+    if (recurring === 'monthly') return '/ month';
+    if (recurring === 'individual') return '/ class';
+    return '';
+  }
 
   return (
-      <>
-        <div> Price: <strong> {'props.price'} </strong></div>
-        <div> Payment: <strong> {'props.payment'} </strong></div>
-        <div> Next payment: <strong> {'props.payment'} </strong></div>
-      </>
+      <div className='classInfo'>
+        <strong className='className'> {props.userClass.name} </strong>
+
+        <div> <div><strong className='label'>Price:</strong></div>
+          <strong> {props.userClass.price?.amount} uah</strong>
+          {setPriceRecurring(props.userClass.price?.recurring)}
+        </div>
+
+        {/* Schedule */}
+        { props.userClass.schedule?.length > 0 && (<div className='schedule'>
+          <strong className='label'> Shedule: </strong>
+          {props.userClass.schedule.map(el => (
+              <div key={el._id} className='schedule-record'>
+                <div className='day'> {el.day} </div>
+                <div className='time'>{el?.time}</div>
+              </div>
+          ))}
+        </div>)}
+
+
+      </div>
   )
 }
 

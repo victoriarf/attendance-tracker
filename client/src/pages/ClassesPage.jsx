@@ -11,6 +11,7 @@ import {TabContext, TabList, TabPanel} from '@mui/lab';
 import ClassInfo from "../components/Class-info";
 
 const CLASSES_CHECKED_KEY = 'classesChecked';
+
 /**
  * Tabs - experimental API https://mui.com/material-ui/react-tabs/
  * @returns {JSX.Element}
@@ -96,7 +97,12 @@ function ClassesPage() {
                             </Stack>
 
                             <Box> <Calendar/> </Box>
-                            <Box> <ClassInfo></ClassInfo> </Box>
+                            <Box> {
+                              classes?.map((userClass) => (
+                                  checkedState[userClass._id] ? <ClassInfo key={userClass._id} userClass={userClass}></ClassInfo> : ''
+                              ))
+                            }
+                            </Box>
                           </Stack>
 
                         </TabPanel>
