@@ -1,11 +1,18 @@
 .classInfo {
   margin-top: 25px;
   height: 200px;
+  width: 400px;
+}
+
+.classNameRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
 .className {
   display: block;
-  margin-bottom: 15px;
+  margin-right: 10px;
 }
 
 .label {

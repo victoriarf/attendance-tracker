@@ -1,4 +1,4 @@
-import {Grid, Stack} from "@mui/material";
+import {Checkbox, FormControlLabel, Grid, Stack} from "@mui/material";
 import React from "react";
 import './Class-info.scss';
 
@@ -9,9 +9,16 @@ function ClassInfo(props) {
     return '';
   }
 
+  function getPaymentLabel(date) {
+    return !!date ? 'Payment:' + date : 'Payment is required';
+  }
+
   return (
       <div className='classInfo'>
-        <strong className='className'> {props.userClass.name} </strong>
+        <div className='classNameRow'>
+          <strong className='className'> {props.userClass.name} </strong>
+          <FormControlLabel control={<Checkbox />} label={getPaymentLabel() } />
+        </div>
 
         <div> <div><strong className='label'>Price:</strong></div>
           <strong> {props.userClass.price?.amount} uah</strong>
