@@ -16,24 +16,24 @@ import {TabContext, TabList, TabPanel} from '@mui/lab';
  */
 function ClassesPage() {
   const queryClient = useQueryClient()
-  let [activeUser, setActiveUser] = useState(undefined);
+  let [activeUserId, setActiveUser] = useState(undefined);
 
 
   const {isLoading, data: users} = useQuery('users', () => getUsers());
 
-  users && users[0] && (activeUser = users[0]);
+  useEffect(() => {
+    if (!activeUserId && users && users[0]) {
+      setActiveUser(users[0]._id);
+    }
+  }, [activeUserId, users]);
 
-  const {data: classes} = useQuery(['classes', activeUser], () => {
-        console.log('activeUser', activeUser);
-        return getUserClasses(activeUser._id)
-      }, {
-        enabled: !!activeUser
+  const {data: classes} = useQuery(['classes', activeUserId], () => getUserClasses(activeUserId), {
+        enabled: !!activeUserId
       }
   )
 
-
   function onUserChanged($event, newValue) {
-    activeUser = newValue;
+    setActiveUser(newValue);
   }
 
   return (
@@ -47,12 +47,12 @@ function ClassesPage() {
                   spacing={0.5}
               >
 
-                <div>activeUser {JSON.stringify(activeUser)}</div>
-                <div>Us8ers: {JSON.stringify(users)}</div>
-                <div>Classes: {JSON.stringify(classes)}</div>
+                {/*<div><strong> activeUser </strong> {JSON.stringify(activeUserId)}</div>*/}
+                {/*<div><strong> Users: </strong> {JSON.stringify(users)}</div>*/}
+                {/*<div><strong> Classes:</strong> {JSON.stringify(classes)}</div>*/}
 
-                <TabContext value={activeUser?._id}>
-                  <TabList  onChange={onUserChanged} centered color='primary'>
+                <TabContext value={activeUserId}>
+                  <TabList onChange={onUserChanged} centered color='primary'>
                     {users?.map((user) => (
                         <Tab key={user._id} label={user.name} value={user._id}/>
                     ))}
