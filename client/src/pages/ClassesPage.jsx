@@ -80,20 +80,20 @@ function ClassesPage() {
                               className='classesPage'
                               direction="row"
                               justifyContent="start"
-                              spacing={1}
+                              spacing={5}
                           >
                             <Stack
                                 className='classesList'
                                 direction="column"
                                 justifyContent="start"
-                                spacing={1}
+                                spacing={0}
                             >
                               {classes?.map((userClass) => (
-                                  <div key={userClass.name}>
+                                  <Box key={userClass.name}>
                                     <ClassButton
                                         userClass={userClass}
                                         isChecked={checkedState[userClass._id] || false}
-                                        onCheckboxChange={() => handleCheckboxChange(userClass._id)}/></div>
+                                        onCheckboxChange={() => handleCheckboxChange(userClass._id)}/></Box>
                               ))}
                             </Stack>
 

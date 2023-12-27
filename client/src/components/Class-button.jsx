@@ -4,16 +4,18 @@ import './Class-button.css';
 
 export const ClassButton = (props) => {
   return (
-      <>
+      <React.Fragment>
         <Button className="classButton" variant='contained' size={"medium"}> {props.userClass.name}</Button>
-        <FormControlLabel control={<Checkbox
+        <FormControlLabel
+            className='classCheckboxLabel'
+            control={<Checkbox
             color='default'
             className='classCheckbox'
             size={"large"}/>}
             label=''
             checked={props.isChecked}
             onChange={props.onCheckboxChange}/>
-      </>
+      </React.Fragment>
   )
 }
 

@@ -1,14 +1,23 @@
-import React, {useState} from "react";
-import { DateCalendar } from '@mui/x-date-pickers/DateCalendar';
+import React, { useRef, useState} from 'react';
+import { Calendar } from "react-multi-date-picker"
+import './Calendar.scss';
 
-function Calendar() {
-  // const [selectedDate, setSelectedDate] = useState(null);
+function CalendarComponent() {
+  // const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  const [value, setValue] = useState(new Date());
 
   return (
       <>
-        <DateCalendar />
+        <div className='classes-calendar'>
+          <Calendar
+              value={value}
+              onChange={setValue}
+              multiple={true}
+              numberOfMonths={1}
+          />
+        </div>
       </>
   )
 }
 
-export default Calendar
+export default CalendarComponent
