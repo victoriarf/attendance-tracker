@@ -83,6 +83,7 @@ function ClassesPage() {
                               spacing={1}
                           >
                             <Stack
+                                className='classesList'
                                 direction="column"
                                 justifyContent="start"
                                 spacing={1}
