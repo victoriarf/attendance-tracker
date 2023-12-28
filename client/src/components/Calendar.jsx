@@ -1,23 +1,87 @@
-import React, { useRef, useState} from 'react';
-import { Calendar } from "react-multi-date-picker"
+import React, {useEffect, useRef, useState} from 'react';
+import {Calendar} from "react-multi-date-picker"
+import {getDaysInMonth, startOfMonth, addDays, isFriday} from 'date-fns';
 import './Calendar.scss';
 
+/**
+ * Refer to docs https://shahabyazdi.github.io/react-multi-date-picker/props/
+ * This calendar has some bugs.
+ * 1 - When you select multiple values, than press again on the selected one -
+ * onFocusedDateChange always will receive latest focused date value, even if user deselect first selected.
+ * 2 - onFocusedDateChange will receive undefined when presses same value again
+ */
 function CalendarComponent() {
-  // const DAYS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-  const [value, setValue] = useState(new Date());
+  const DATE_FORMAT = 'DD/MM/YYYY';
+
+  const [selectedDates, setSelectedDates] = useState([]);
+  const [missedDates, setMissedDates] = useState([]);
+
+  useEffect(() => {
+    console.log('Selected Dates:', selectedDates.map((date) => date.format(DATE_FORMAT)));
+    console.log('Missed : ', missedDates.map((date) => date.format(DATE_FORMAT)));
+  }, [selectedDates, missedDates]);
+
+
+  const handleMonthChange = (newDate) => {
+    const firstDayOfMonth = startOfMonth(newDate);
+    const lastDayOfMonth = addDays(firstDayOfMonth, getDaysInMonth(newDate) - 1);
+
+    const fridaysInMonth = [];
+    for (let date = firstDayOfMonth; date <= lastDayOfMonth; date = addDays(date, 1)) {
+      if (isFriday(date)) {
+        fridaysInMonth.push(date);
+      }
+    }
+
+    setSelectedDates(fridaysInMonth);
+    setMissedDates([]);
+  };
+
+  function findMissingElement(initialArray, newArray) {
+    return initialArray.filter(el => !newArray.includes(el));
+  }
+
+  const handleDatesChange = (dates) => {
+    let deselectedDates = findMissingElement(selectedDates, dates);
+
+    if (deselectedDates.length > 0) {
+      setMissedDates([...missedDates, ...deselectedDates])
+    } else {
+      let filtered = findMissingElement(missedDates, dates);
+      console.log('NEW MISSED', filtered.map(el => el.format(DATE_FORMAT)));
+      setMissedDates([...missedDates.filter(el => el !== filtered[0])]);
+    }
+
+    setSelectedDates(dates);
+
+  };
+
 
   return (
-      <>
-        <div className='classes-calendar'>
-          <Calendar
-              value={value}
-              onChange={setValue}
-              multiple={true}
-              numberOfMonths={1}
-          />
-        </div>
-      </>
-  )
+      <div className="classes-calendar">
+        <Calendar
+            value={selectedDates}
+            onChange={handleDatesChange}
+            multiple
+            numberOfMonths={1}
+            onMonthChange={handleMonthChange}
+            className='VitaClass'
+            inputClass='VitaInputClass'
+            containerClassName='VitaContainerClass'
+            mapDays={({ date, isSameDate }) => {
+              let props = {};
+              missedDates.map(day => {
+                if ( isSameDate(date, day)) {
+                  props.style = { backgroundColor: 'rgba(0, 0, 0, 0.15)' };
+                }
+              })
+
+
+              return props;
+            }}
+        />
+      </div>
+  );
 }
 
-export default CalendarComponent
+export default CalendarComponent;
