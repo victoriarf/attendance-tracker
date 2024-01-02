@@ -1,6 +1,6 @@
 import React, {useEffect, useRef, useState} from 'react';
 import {Calendar} from "react-multi-date-picker"
-import {getDaysInMonth, startOfMonth, addDays, isFriday} from 'date-fns';
+import {getDaysInMonth, startOfMonth, addDays, isFriday, isSameDay} from 'date-fns';
 import './Calendar.scss';
 
 /**
@@ -38,22 +38,30 @@ function CalendarComponent() {
   };
 
   function findMissingElement(initialArray, newArray) {
-    return initialArray.filter(el => !newArray.includes(el));
+    return initialArray.filter(el => {
+      let found = newArray.reduce((acc, current) => {
+        el.format(DATE_FORMAT) === current.format(DATE_FORMAT) && acc.push(current.format(DATE_FORMAT));
+        return acc;
+      }, []);
+      return !found.includes(el.format(DATE_FORMAT));
+    });
   }
 
-  const handleDatesChange = (dates) => {
-    let deselectedDates = findMissingElement(selectedDates, dates);
 
-    if (deselectedDates.length > 0) {
-      setMissedDates([...missedDates, ...deselectedDates])
+  const handleDatesChange = (dates) => {
+    // 1) User deselects a date -> add to missing
+    if (dates.length < selectedDates.length) {
+      let deselectedDates = findMissingElement(selectedDates, dates);
+      if (deselectedDates.length > 0) {
+        setMissedDates([...missedDates, ...deselectedDates])
+      }
+
     } else {
-      let filtered = findMissingElement(missedDates, dates);
-      console.log('NEW MISSED', filtered.map(el => el.format(DATE_FORMAT)));
-      setMissedDates([...missedDates.filter(el => el !== filtered[0])]);
+      let reselected = findMissingElement(missedDates, dates);
+      setMissedDates(reselected);
     }
 
     setSelectedDates(dates);
-
   };
 
 
@@ -65,14 +73,12 @@ function CalendarComponent() {
             multiple
             numberOfMonths={1}
             onMonthChange={handleMonthChange}
-            className='VitaClass'
-            inputClass='VitaInputClass'
-            containerClassName='VitaContainerClass'
-            mapDays={({ date, isSameDate }) => {
+            className='attendance-calendar'
+            mapDays={({date, isSameDate}) => {
               let props = {};
               missedDates.map(day => {
-                if ( isSameDate(date, day)) {
-                  props.style = { backgroundColor: 'rgba(0, 0, 0, 0.15)' };
+                if (isSameDate(date, day)) {
+                  props.style = {backgroundColor: 'rgba(0, 0, 0, 0.15)'};
                 }
               })
 
