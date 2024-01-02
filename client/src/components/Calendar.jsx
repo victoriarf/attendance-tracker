@@ -23,18 +23,7 @@ function CalendarComponent() {
 
 
   const handleMonthChange = (newDate) => {
-    const firstDayOfMonth = startOfMonth(newDate);
-    const lastDayOfMonth = addDays(firstDayOfMonth, getDaysInMonth(newDate) - 1);
-
-    const fridaysInMonth = [];
-    for (let date = firstDayOfMonth; date <= lastDayOfMonth; date = addDays(date, 1)) {
-      if (isFriday(date)) {
-        fridaysInMonth.push(date);
-      }
-    }
-
-    setSelectedDates(fridaysInMonth);
-    setMissedDates([]);
+    console.log('handle month change');
   };
 
   function findMissingElement(initialArray, newArray) {
