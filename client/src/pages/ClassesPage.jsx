@@ -1,13 +1,13 @@
 import {Box, Stack, Tab} from "@mui/material";
 import {useEffect, useState} from "react";
-
+import {TabContext, TabList, TabPanel} from '@mui/lab';
 import {QueryClient, useQuery, useQueryClient} from "react-query";
+
 import {getUserClasses} from "../api/classesApi";
 import {getUsers} from "../api/userApi";
 import Calendar from "../components/Calendar";
 import ClassButton from "../components/Class-button";
 import './ClassesPage.scss';
-import {TabContext, TabList, TabPanel} from '@mui/lab';
 import ClassInfo from "../components/Class-info";
 
 const CLASSES_CHECKED_KEY = 'classesChecked';
