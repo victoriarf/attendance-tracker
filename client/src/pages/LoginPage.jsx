@@ -23,7 +23,7 @@ function LoginPage() {
     }),
     validationSchema: Yup.object({
       email: Yup.string().required('Email is required').email('Invalid email'),
-      password: Yup.string().required('Password is required')
+      password: Yup.string().required('Password is required').min(6)
     })
   })
 
@@ -46,9 +46,9 @@ function LoginPage() {
                   name="email"
                   autoComplete="email"
                   autoFocus
+                  error={!!formik.errors.email}
               />
 
-              {formik.errors.email}
               <TextField
                   value={formik.values.password}
                   onChange={formik.handleChange}
@@ -60,6 +60,7 @@ function LoginPage() {
                   type="password"
                   id="password"
                   autoComplete="current-password"
+                  error={!!formik.errors.password}
               />
 
 
@@ -79,6 +80,7 @@ function LoginPage() {
                   fullWidth
                   variant="contained"
                   sx={{mt: 3, mb: 2}}
+                  disabled={!formik.isValid}
               >
                 Sign In
               </Button>
