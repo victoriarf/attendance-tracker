@@ -6,19 +6,22 @@ import {
   TextField,
   Typography
 } from "@mui/material";
+import {useFormik} from "formik";
 import React from "react";
 
 
 function LoginPage() {
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const formik = useFormik({
+    initialValues: {
+      email: '',
+      password: '',
+      rememberLogIn: false
+    },
+    onSubmit: ((values) => {
+      console.log('On submit formik', values);
+    })
+  })
 
   return (
       <>
@@ -26,8 +29,10 @@ function LoginPage() {
           <Typography component="h1" variant="h5">
             Sign in
           </Typography>
-          <Box component="form" onSubmit={handleSubmit} noValidate sx={{mt: 1}}>
+          <Box component="form" noValidate sx={{mt: 1}} onSubmit={formik.handleSubmit}>
             <TextField
+                value={formik.values.email}
+                onChange={formik.handleChange}
                 margin="normal"
                 required
                 fullWidth
@@ -38,6 +43,8 @@ function LoginPage() {
                 autoFocus
             />
             <TextField
+                value={formik.values.password}
+                onChange={formik.handleChange}
                 margin="normal"
                 required
                 fullWidth
@@ -48,7 +55,12 @@ function LoginPage() {
                 autoComplete="current-password"
             />
             <FormControlLabel
-                control={<Checkbox value="remember" color="primary"/>}
+                control={<Checkbox color="primary"
+                    checked={formik.values.rememberLogIn}
+                    onChange={formik.handleChange}
+                    name='rememberLogIn'
+                />}
+
                 label="Remember me"
             />
             <Button
