@@ -4,7 +4,7 @@ import {TabContext, TabList, TabPanel} from '@mui/lab';
 import {QueryClient, useQuery, useQueryClient} from "react-query";
 
 import {getUserClasses} from "../api/classesApi";
-import {getUsers} from "../api/userApi";
+import {getUsers} from "../api/usersApi";
 import Calendar from "../components/Calendar";
 import ClassButton from "../components/Class-button";
 import './ClassesPage.scss';
