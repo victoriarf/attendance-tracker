@@ -85,9 +85,6 @@ function LoginPage() {
                 error={!!formik.errors.password}
             />
 
-
-            {/*{formik.errors.password}*/}
-
             <FormControlLabel
                 control={<Checkbox color="primary"
                     checked={formik.values.rememberLogIn}
