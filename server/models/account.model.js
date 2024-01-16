@@ -1,9 +1,9 @@
 var mongoose = require('mongoose');
 
 /**
- * Account is a user who has registered
- * User though is a parent or a child, added in the application
- * TODO: instead of account & user -> User & Person
+ * User is a user who has registered
+ * Student is a child or another person, added in the application
+ * User & Student
  * @type {module:mongoose.Schema<any, Model<any, any, any, any>, {}, {}, {}, {}, DefaultSchemaOptions, number, HydratedDocument<FlatRecord<number>, unknown>>}
  */
 const AccountSchema = new mongoose.Schema({

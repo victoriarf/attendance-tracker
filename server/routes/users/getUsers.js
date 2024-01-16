@@ -1,6 +1,6 @@
-const UserModel = require('../../models/user.model');
+const StudentModel = require('../../models/student.model');
 
 module.exports = async (req, res) => {
-  const users = await UserModel.find();
-  res.json(users);
+  const student = await StudentModel.find();
+  res.json(student);
 };

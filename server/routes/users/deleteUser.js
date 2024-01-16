@@ -1,10 +1,10 @@
-const UserModel = require('../../models/user.model');
+const StudentModel = require('../../models/student.model');
 
 module.exports = async (req, res) => {
   const { id } = req.params;
-  const user = await UserModel.findById(id);
+  const student = await StudentModel.findById(id);
 
-  await user.deleteOne();
-  res.status(204).json(user);
+  await student.deleteOne();
+  res.status(204).json(student);
 };
 

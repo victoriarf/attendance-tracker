@@ -1,11 +1,11 @@
-const UserModel = require('../../models/user.model');
+const StudentModel = require('../../models/student.model');
 
 module.exports = async (req, res) => {
   const { name }  = req.body;
 
-  const user = new UserModel({name});
-  await user.save();
+  const student = new StudentModel({name});
+  await student.save();
 
-  res.json(user);
+  res.json(student);
 };
 

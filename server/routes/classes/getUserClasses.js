@@ -1,19 +1,19 @@
 const ClassModel = require('../../models/class.model');
-const UserModel = require("../../models/user.model");
+const StudentModel = require("../../models/student.model");
 
 module.exports = async (req, res) => {
   try {
-    const userId = req.params.userId;
-    const user = await UserModel.findById(userId);
+    const studentId = req.params.userId;
+    const student = await StudentModel.findById(studentId);
 
-    if (!user) {
-      return res.status(404).json({error: 'User not found'});
+    if (!student) {
+      return res.status(404).json({error: 'Student not found'});
     }
 
-    await user.populate('classes');
+    await student.populate('classes');
 
     // Respond with the found classes
-    res.json(user.classes);
+    res.json(student.classes);
   } catch (error) {
     res.status(500).json({message: error.message});
   }

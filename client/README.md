@@ -14,9 +14,9 @@ This application will help tp track the attendance and calculate every mobth tot
 
 
 The dashboard displays:
-- List of persons (children) 
+- List of students (children) 
 - List of classes for each person 
-- Calendar of attandance 
+- Calendar of attendance 
 - Info about payment, shedule and some other info may be added.
 
 

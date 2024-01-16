@@ -2,7 +2,7 @@ const mongoose = require('mongoose');
 
 // TODO: add validation
 // + username: {type: String, lowercase: true, required: [true, "can't be blank"], match: [/^[a-zA-Z0-9]+$/, 'is invalid'], index: true},
-const userSchema = new mongoose.Schema({
+const studentSchema = new mongoose.Schema({
   name: {
     type: String,
     required: true,
@@ -15,6 +15,6 @@ const userSchema = new mongoose.Schema({
   ],
 });
 
-const UserModel = mongoose.model('User', userSchema);
+const StudentModel = mongoose.model('Student', studentSchema);
 
-module.exports = UserModel;
+module.exports = StudentModel;

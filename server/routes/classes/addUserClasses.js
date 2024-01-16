@@ -1,15 +1,15 @@
 const ClassModel = require('../../models/class.model');
-const UserModel = require("../../models/user.model");
+const StudentModel = require("../../models/student.model");
 
 module.exports = async (req, res) => {
   const {name, payment = false, price, recurring = 'monthly'} = req.body;
 
   try {
-    const userId = req.params.userId;
+    const studentId = req.params.userId;
 
-    const user = await UserModel.findById(userId);
+    const student = await StudentModel.findById(studentId);
 
-    if (!user) {
+    if (!student) {
       return res.status(404).json({ message: 'User not found' });
     }
 
@@ -18,11 +18,11 @@ module.exports = async (req, res) => {
     await userClass.save();
 
     // Push the new class to the user's classes array
-    user.classes.push(userClass);
+    student.classes.push(userClass);
 
 
     // Save the updated user
-    await user.save();
+    await student.save();
 
     if (!userClass) {
       return res.status(404).json({ message: 'Class not found' });
