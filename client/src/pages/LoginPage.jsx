@@ -7,13 +7,22 @@ import {
   Typography
 } from "@mui/material";
 import {useFormik} from "formik";
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
+import {useNavigate} from "react-router";
 import * as Yup from "yup";
 import {loginWithEmailAndPassword, registerWithEmailAndPassword} from "../api/profileApi";
+import Authentication from "../authentication";
 import {auth} from "../firebase";
 
 function LoginPage() {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  useEffect(() => {
+    setIsAuthenticated(Authentication.isAuthenticated());
+  }, []);
+
+
   const [isSignInMode, setIsSignInMode] = useState(true);
+  const navigate = useNavigate();
 
   const toggleSignInMode = () => {
     setIsSignInMode((prevMode) => !prevMode);
@@ -31,11 +40,16 @@ function LoginPage() {
 
       if (isSignInMode) {
         loginWithEmailAndPassword(auth, email, password)
-            .then(user => {console.log('Signed in', user);})
+            .then(user => {
+              // Authentication.login();
+              Authentication.login( navigate("/classes"));
+              console.log('Signed in', user);
+              console.log('auth: ', Authentication.isAuthenticated());
+            })
             .catch(error => { console.log(error)})
       } else {
         registerWithEmailAndPassword(auth, email, password).then(user => {
-          console.log('Created user', user)
+          Authentication.login(()=> console.log('Created user', user))
         }).catch(err => {
           const errorCode = error.code;
           const errorMessage = error.message;
@@ -51,6 +65,7 @@ function LoginPage() {
 
   return (
       <>
+        {'isAuthenticated'+ isAuthenticated}
         <Container component="main" maxWidth="xs">
           <Typography component="h1" variant="h5">
             {isSignInMode ? "Sign In" : "Sign Up"}
