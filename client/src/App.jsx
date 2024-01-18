@@ -1,5 +1,6 @@
 import './App.css'
 import React, {useEffect, useState} from "react";
+import Navbar from "./components/Navbar";
 import ClassesPage from "./pages/ClassesPage";
 import LoginPage from "./pages/LoginPage";
 import PageNotFound from "./pages/PageNotFound";
@@ -19,8 +20,8 @@ function App() {
 
   return (
       <>
+        <Navbar></Navbar>
 
-        {'Authentication:' + isAuthenticated}
         <Router>
           <Routes>
             {/*<Route exact path="/" element={<Navigate to={"/login"} />} />*/}
