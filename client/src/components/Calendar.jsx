@@ -1,12 +1,11 @@
-import React, {useEffect, useRef, useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Calendar} from "react-multi-date-picker"
-import {getDaysInMonth, startOfMonth, addDays, isFriday, isSameDay} from 'date-fns';
 import './Calendar.scss';
 
 /**
  * Refer to docs https://shahabyazdi.github.io/react-multi-date-picker/props/
  * This calendar has some bugs.
- * 1 - When you select multiple values, than press again on the selected one -
+ * 1 - When you select multiple values, then press again on the selected one -
  * onFocusedDateChange always will receive latest focused date value, even if user deselect first selected.
  * 2 - onFocusedDateChange will receive undefined when presses same value again
  */
@@ -23,7 +22,7 @@ function CalendarComponent() {
 
 
   const handleMonthChange = (newDate) => {
-    console.log('handle month change');
+    console.log(newDate, 'handle month change');
   };
 
   function findMissingElement(initialArray, newArray) {
@@ -55,27 +54,27 @@ function CalendarComponent() {
 
 
   return (
-      <div className="classes-calendar">
-        <Calendar
-            value={selectedDates}
-            onChange={handleDatesChange}
-            multiple
-            numberOfMonths={1}
-            onMonthChange={handleMonthChange}
-            className='attendance-calendar'
-            mapDays={({date, isSameDate}) => {
-              let props = {};
-              missedDates.map(day => {
-                if (isSameDate(date, day)) {
-                  props.style = {backgroundColor: 'rgba(0, 0, 0, 0.15)'};
-                }
-              })
+    <div className="classes-calendar">
+      <Calendar
+        value={selectedDates}
+        onChange={handleDatesChange}
+        multiple
+        numberOfMonths={1}
+        onMonthChange={handleMonthChange}
+        className='attendance-calendar'
+        mapDays={({date, isSameDate}) => {
+          let props = {};
+          missedDates.map(day => {
+            if (isSameDate(date, day)) {
+              props.style = {backgroundColor: 'rgba(0, 0, 0, 0.15)'};
+            }
+          })
 
 
-              return props;
-            }}
-        />
-      </div>
+          return props;
+        }}
+      />
+    </div>
   );
 }
 

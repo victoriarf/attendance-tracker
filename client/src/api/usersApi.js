@@ -1,10 +1,8 @@
-const API_URL = 'http://localhost:5000'; // TODO
-
-export function getUsers () {
-  return fetch(`${API_URL}/users`, {
+export function getUsers() {
+  return fetch(`${import.meta.env.VITE_API_URL}/users`, {
     method: 'GET',
     headers: {
-      'Content-Type': 'application/json',
-    },
+      'Content-Type': 'application/json'
+    }
   }).then(response => response.json())
 }

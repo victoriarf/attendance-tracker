@@ -1,18 +1,17 @@
-import {initializeApp} from "@firebase/app";
-import {getFirestore} from 'firebase/firestore/lite';
-import {getAuth} from "firebase/auth";
+import { initializeApp } from '@firebase/app'
+import { getFirestore } from 'firebase/firestore/lite'
+import { getAuth } from 'firebase/auth'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyC4OS3MxJGQXvWDdZX6qqHEqb_yydUc4AI",
-  authDomain: "payment-tracker-3298d.firebaseapp.com",
-  projectId: "payment-tracker-3298d",
-  storageBucket: "payment-tracker-3298d.appspot.com",
-  messagingSenderId: "662706914212",
-  appId: "1:662706914212:web:6cf9e0e6a3c4540806b731"
-}; // TODO: no commit this config
-
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
+  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
+  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
+  storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
+  appid: import.meta.env.VITE_FIREBASE_APP_ID
+}
 
 // Initialize Firebase
-const firebaseApp = initializeApp(firebaseConfig);
-export const db = getFirestore(firebaseApp);
-export const auth = getAuth(firebaseApp);
+const firebaseApp = initializeApp(firebaseConfig)
+export const db = getFirestore(firebaseApp)
+export const auth = getAuth(firebaseApp)
