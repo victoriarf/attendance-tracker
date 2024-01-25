@@ -1,4 +1,4 @@
-const ClassModel = require('../models/class.model');
+const ClassModel = require('../../models/class.model');
 
 module.exports = async (req, res) => {
   const { id } = req.params;

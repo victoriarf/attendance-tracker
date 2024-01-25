@@ -1,0 +1,42 @@
+.classInfo {
+  &:not(:first-child) {
+    margin-top: 25px;
+  }
+
+  height: 200px;
+  width: 400px;
+}
+
+.classNameRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.className {
+  display: block;
+  margin-right: 10px;
+}
+
+.label {
+  display: block;
+  margin-top: 15px;
+}
+
+.schedule {
+  margin-top: 15px;
+
+  .schedule-record {
+    display: flex;
+    width: 150px;
+
+    .day {
+      width: 400px;
+      text-transform: capitalize;
+    }
+
+    .time {
+      width: 100px;
+    }
+  }
+}

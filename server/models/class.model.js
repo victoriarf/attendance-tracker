@@ -6,15 +6,16 @@ const ClassSchema = new mongoose.Schema({
     required: true,
   },
   price: {
-    type: String,
-    required: true,
+    amount: {
+      type: Number,
+      required: true,
+    },
+    recurring: {
+      type: String,
+      enum: ['monthly', 'individual'], // 'per-session'
+      required: true,
+    }
   },
-  recurring: {
-    type: String,
-    enum: ['monthly', 'weekly', 'other'],
-    required: true,
-  },
-
   lastPayment: {
     type: Date,
     required: false,
@@ -22,7 +23,19 @@ const ClassSchema = new mongoose.Schema({
   nextPayment: {
     type: Date,
     required: false,
-  }
+  },
+  schedule: [
+    {
+      day: {
+        type: String,
+        enum: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'],
+        required: true,
+      },
+      time: {
+        type: String,
+      },
+    },
+  ],
 })
 
 const ClassModel = mongoose.model('Class', ClassSchema);

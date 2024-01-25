@@ -1,0 +1,15 @@
+button.classButton {
+    border-radius: 18px;
+    padding: 5px 15px;
+    min-width: 150px;
+}
+
+.classCheckbox.MuiCheckbox-root {
+    margin-left: 10px;
+    margin-right: -10px;
+    padding: 6px;
+}
+
+.classCheckboxLabel.MuiFormControlLabel-root {
+    margin-right: 0;
+}

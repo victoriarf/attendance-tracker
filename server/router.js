@@ -19,21 +19,21 @@ router.get('/profile', require('./routes/getProfile'));
 
 // Users
 router.route('/users')
-    .get(require('./routes/getUsers'))
-    .post(require('./routes/addUser'))
+    .get(require('./routes/users/getUsers'))
+    .post(require('./routes/users/addUser'))
 
 router.route('/users/:id')
-    .put(require('./routes/updateUser'))
-    .delete(require('./routes/deleteUser'))
+    .put(require('./routes/users/updateUser'))
+    .delete(require('./routes/users/deleteUser'))
 
 // Classes
-router.route('/classes/:userName')
-    .get(require('./routes/getUserClasses'))
-    .post(require('./routes/addUserClasses'))
+router.route('/classes/:userId')
+    .get(require('./routes/classes/getUserClasses'))
+    .post(require('./routes/classes/addUserClasses'))
 
-router.route('/classes/:userName/:id')
-    .put(require('./routes/updateUserClass'))
-    .delete(require('./routes/deleteUserClass'))
+router.route('/classes/:id')
+    .put(require('./routes/classes/updateUserClass'))
+    .delete(require('./routes/classes/deleteUserClass'))
 
 
 module.exports = router;
