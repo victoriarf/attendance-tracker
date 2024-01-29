@@ -1,19 +1,15 @@
 import './App.css'
-import React, { useEffect, useState } from 'react'
+import React, { useContext } from 'react'
+import { AuthContext } from './AuthContext'
 import ErrorBoundary from './ErrorBoundary'
-import ClassesPage from './pages/ClassesPage'
+import ClassesPage from './pages/ClassesPage.jsx'
 import LoginPage from './pages/LoginPage'
 import PageNotFound from './pages/PageNotFound'
 import ProfilePage from './pages/ProfilePage'
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
-import Authentication from './authentication'
 
 function App() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
-
-  useEffect(() => {
-    setIsAuthenticated(Authentication.isAuthenticated())
-  }, [])
+  const { userValue, setUserValue } = useContext(AuthContext)
 
   return (
     <>
@@ -23,16 +19,13 @@ function App() {
             {/*<Route exact path="/" element={<Navigate to={"/login"} />} />*/}
             <Route
               path="/"
-              element={
-                Authentication.isAuthenticated() ? (
-                  <Navigate to="/classes" />
-                ) : (
-                  <Navigate to="/login" />
-                )
-              }
+              element={userValue ? <Navigate to="/classes" /> : <Navigate to="/login" />}
             />
 
-            <Route path="/classes" element={<ClassesPage />} />
+            <Route
+              path="/classes"
+              element={userValue ? <ClassesPage /> : <Navigate to="/login" />}
+            />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={<ProfilePage />} />
             <Route path="*" element={<PageNotFound />} />

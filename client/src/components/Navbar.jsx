@@ -1,17 +1,17 @@
 import AccountCircle from '@mui/icons-material/AccountCircle'
-import React from 'react'
-import { AppBar, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
+import React, { useContext } from 'react'
+import { AppBar, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
+import { useNavigate } from 'react-router-dom'
 
 import './Class-button.css'
-import { useNavigate } from 'react-router-dom'
-import Authentication from './../authentication'
+import { AuthContext } from '../AuthContext.jsx'
 
 export const Navbar = () => {
   const navigate = useNavigate()
 
-  const [auth, setAuth] = React.useState(true)
   const [anchorEl, setAnchorEl] = React.useState(null)
+  const { userValue, setUserValue } = useContext(AuthContext)
 
   const handleMenu = event => {
     setAnchorEl(event.currentTarget)
@@ -22,10 +22,11 @@ export const Navbar = () => {
   }
 
   const logout = () => {
-    Authentication.logout(navigate('/login'))
+    setUserValue(null)
+    navigate('/login')
   }
 
-  const openProfile = event => {
+  const openProfile = () => {
     navigate('/profile')
   }
 
@@ -40,10 +41,12 @@ export const Navbar = () => {
           <MenuIcon />
         </IconButton>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          Attendance and Payment Tracker
+          <Button variant="text" color="inherit" onClick={navigateHome}>
+            Attendance and Payment Tracker
+          </Button>
         </Typography>
 
-        {auth && (
+        {userValue && (
           <div>
             <IconButton
               size="large"

@@ -10,26 +10,33 @@ import {
   Typography
 } from '@mui/material'
 import { useFormik } from 'formik'
-import React, { useEffect, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import * as Yup from 'yup'
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '../api/profileApi'
-import Authentication from '../authentication'
+import { AuthContext } from '../AuthContext'
 import Navbar from '../components/Navbar'
 import { auth } from '../firebase'
 
 function LoginPage() {
-  const [isAuthenticated, setIsAuthenticated] = useState(false)
+  const { userValue, setUserValue } = useContext(AuthContext)
+  const navigate = useNavigate()
+
   useEffect(() => {
-    setIsAuthenticated(Authentication.isAuthenticated())
-  }, [])
+    if (userValue) {
+      navigate('/classes')
+    }
+  }, [userValue])
 
   const [isSignInMode, setIsSignInMode] = useState(true)
-  const navigate = useNavigate()
 
   const toggleSignInMode = () => {
     setIsSignInMode(prevMode => !prevMode)
     formik.resetForm()
+  }
+
+  const onLoggedIn = user => {
+    setUserValue(user)
   }
 
   const formik = useFormik({
@@ -42,7 +49,7 @@ function LoginPage() {
       if (isSignInMode) {
         loginWithEmailAndPassword(auth, email, password)
           .then(user => {
-            Authentication.login(navigate('/classes'))
+            onLoggedIn(user)
           })
           .catch(error => {
             console.log(error)
@@ -50,7 +57,7 @@ function LoginPage() {
       } else {
         registerWithEmailAndPassword(auth, email, password)
           .then(user => {
-            Authentication.login(navigate('/classes'))
+            onLoggedIn(user)
           })
           .catch(error => {
             const errorCode = error.code
