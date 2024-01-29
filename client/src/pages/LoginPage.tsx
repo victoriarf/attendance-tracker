@@ -7,70 +7,71 @@ import {
   Grid,
   Link,
   TextField,
-  Typography
-} from '@mui/material'
-import { useFormik } from 'formik'
-import React, { useContext, useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import * as Yup from 'yup'
-import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '../api/profileApi'
-import { AuthContext } from '../AuthContext'
-import Navbar from '../components/Navbar'
-import { auth } from '../firebase'
+  Typography,
+} from '@mui/material';
+import { useFormik } from 'formik';
+import React, { useContext, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import * as Yup from 'yup';
+import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '../api/profileApi';
+import { AuthContext } from '../AuthContext';
+import Navbar from '../components/Navbar';
+import { auth } from '../firebase';
+import { User, UserCredential } from 'firebase/auth';
 
 function LoginPage() {
-  const { userValue, setUserValue } = useContext(AuthContext)
-  const navigate = useNavigate()
+  const { userValue, setUserValue } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (userValue) {
-      navigate('/classes')
+      navigate('/classes');
     }
-  }, [userValue])
+  }, [userValue]);
 
-  const [isSignInMode, setIsSignInMode] = useState(true)
+  const [isSignInMode, setIsSignInMode] = useState(true);
 
   const toggleSignInMode = () => {
-    setIsSignInMode(prevMode => !prevMode)
-    formik.resetForm()
-  }
+    setIsSignInMode(prevMode => !prevMode);
+    formik.resetForm();
+  };
 
-  const onLoggedIn = user => {
-    setUserValue(user)
-  }
+  const onLoggedIn = (user: User) => {
+    setUserValue(user);
+  };
 
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
-      rememberLogIn: false
+      rememberLogIn: false,
     },
     onSubmit: ({ email, password }) => {
       if (isSignInMode) {
         loginWithEmailAndPassword(auth, email, password)
-          .then(user => {
-            onLoggedIn(user)
+          .then(({ user }: UserCredential) => {
+            onLoggedIn(user);
           })
           .catch(error => {
-            console.log(error)
-          })
+            console.log(error);
+          });
       } else {
         registerWithEmailAndPassword(auth, email, password)
-          .then(user => {
-            onLoggedIn(user)
+          .then(({ user }: UserCredential) => {
+            onLoggedIn(user);
           })
           .catch(error => {
-            const errorCode = error.code
-            const errorMessage = error.message
-            console.error('Authentication error:', errorCode, errorMessage)
-          })
+            const errorCode = error.code;
+            const errorMessage = error.message;
+            console.error('Authentication error:', errorCode, errorMessage);
+          });
       }
     },
     validationSchema: Yup.object({
       email: Yup.string().required('Email is required').email('Invalid email'),
-      password: Yup.string().required('Password is required').min(6)
-    })
-  })
+      password: Yup.string().required('Password is required').min(6),
+    }),
+  });
 
   return (
     <>
@@ -126,8 +127,7 @@ function LoginPage() {
             fullWidth
             variant="contained"
             sx={{ mt: 3, mb: 2 }}
-            disabled={!formik.isValid}
-          >
+            disabled={!formik.isValid}>
             {isSignInMode ? 'Sign In' : 'Sign Up'}
           </Button>
           <Grid container>
@@ -147,7 +147,7 @@ function LoginPage() {
         </Box>
       </Container>
     </>
-  )
+  );
 }
 
-export default LoginPage
+export default LoginPage;

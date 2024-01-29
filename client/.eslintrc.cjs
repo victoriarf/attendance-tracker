@@ -5,7 +5,9 @@ module.exports = {
   },
   "extends": [
     "eslint:recommended",
-    "plugin:react/recommended"
+    "plugin:react/recommended",
+    "plugin:@typescript-eslint/recommended",
+    "prettier"
   ],
   "overrides": [
     {
@@ -27,11 +29,13 @@ module.exports = {
     "dist/",
     "build/"
   ],
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
   "plugins": [
+    "@typescript-eslint",
     "react",
     "unused-imports"
   ],

@@ -1,38 +1,38 @@
-import AccountCircle from '@mui/icons-material/AccountCircle'
-import React, { useContext } from 'react'
-import { AppBar, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material'
-import MenuIcon from '@mui/icons-material/Menu'
-import { useNavigate } from 'react-router-dom'
+import AccountCircle from '@mui/icons-material/AccountCircle';
+import React, { useContext } from 'react';
+import { AppBar, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
+import MenuIcon from '@mui/icons-material/Menu';
+import { useNavigate } from 'react-router-dom';
 
-import './Class-button.css'
-import { AuthContext } from '../AuthContext.jsx'
+import './Class-button.css';
+import { AuthContext } from '../AuthContext.jsx';
 
 export const Navbar = () => {
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const { userValue, setUserValue } = useContext(AuthContext)
+  const [anchorEl, setAnchorEl] = React.useState<EventTarget | null>(null);
+  const { userValue, setUserValue } = useContext(AuthContext);
 
-  const handleMenu = event => {
-    setAnchorEl(event.currentTarget)
-  }
+  const handleMenu = (event: Event) => {
+    setAnchorEl(event.currentTarget);
+  };
 
   const handleClose = () => {
-    setAnchorEl(null)
-  }
+    setAnchorEl(null);
+  };
 
   const logout = () => {
-    setUserValue(null)
-    navigate('/login')
-  }
+    setUserValue(undefined);
+    navigate('/login');
+  };
 
   const openProfile = () => {
-    navigate('/profile')
-  }
+    navigate('/profile');
+  };
 
   const navigateHome = () => {
-    navigate('/classes')
-  }
+    navigate('/classes');
+  };
 
   return (
     <AppBar position={'static'} color="primary" enableColorOnDark>
@@ -54,8 +54,7 @@ export const Navbar = () => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleMenu}
-              color="inherit"
-            >
+              color="inherit">
               <AccountCircle />
             </IconButton>
             <Menu
@@ -63,16 +62,15 @@ export const Navbar = () => {
               anchorEl={anchorEl}
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               keepMounted
               transformOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               open={Boolean(anchorEl)}
-              onClose={handleClose}
-            >
+              onClose={handleClose}>
               <MenuItem onClick={openProfile}>Profile</MenuItem>
               <MenuItem onClick={logout}>Log out</MenuItem>
             </Menu>
@@ -80,7 +78,7 @@ export const Navbar = () => {
         )}
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};
 
-export default Navbar
+export default Navbar;

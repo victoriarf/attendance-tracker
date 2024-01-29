@@ -1,19 +1,19 @@
-import './App.css'
-import React, { useContext } from 'react'
-import { AuthContext } from './AuthContext'
-import ErrorBoundary from './ErrorBoundary'
-import ClassesPage from './pages/ClassesPage.jsx'
-import LoginPage from './pages/LoginPage'
-import PageNotFound from './pages/PageNotFound'
-import ProfilePage from './pages/ProfilePage'
-import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom'
+import './App.css';
+import React, { useContext } from 'react';
+import { AuthContext } from './AuthContext';
+import ErrorBoundary from './ErrorBoundary';
+import ClassesPage from './pages/ClassesPage.jsx';
+import LoginPage from './pages/LoginPage';
+import PageNotFound from './pages/PageNotFound';
+import ProfilePage from './pages/ProfilePage';
+import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 
 function App() {
-  const { userValue, setUserValue } = useContext(AuthContext)
+  const { userValue } = useContext(AuthContext);
 
   return (
     <>
-      <ErrorBoundary>
+      <ErrorBoundary fallback="Error Fallback">
         <Router>
           <Routes>
             {/*<Route exact path="/" element={<Navigate to={"/login"} />} />*/}
@@ -33,7 +33,7 @@ function App() {
         </Router>
       </ErrorBoundary>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
