@@ -20,6 +20,13 @@ module.exports = {
       }
     }
   ],
+  "ignorePatterns": [
+    "node_modules/",
+    "**/node_modules/",
+    "/**/node_modules/*",
+    "dist/",
+    "build/"
+  ],
   "parserOptions": {
     "ecmaVersion": "latest",
     "sourceType": "module"
