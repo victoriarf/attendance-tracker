@@ -7,7 +7,7 @@ interface ClassButtonProps {
     name: string;
   };
   isChecked: boolean;
-  onCheckboxChange: () => {};
+  onCheckboxChange: () => void;
 }
 
 export const ClassButton = (props: ClassButtonProps) => {

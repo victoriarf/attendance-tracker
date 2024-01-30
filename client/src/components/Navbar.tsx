@@ -1,5 +1,5 @@
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import React, { useContext } from 'react';
+import React, { SyntheticEvent, useContext } from 'react';
 import { AppBar, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
@@ -10,10 +10,10 @@ import { AuthContext } from '../AuthContext.jsx';
 export const Navbar = () => {
   const navigate = useNavigate();
 
-  const [anchorEl, setAnchorEl] = React.useState<EventTarget | null>(null);
+  const [anchorEl, setAnchorEl] = React.useState<Element | null>(null);
   const { userValue, setUserValue } = useContext(AuthContext);
 
-  const handleMenu = (event: Event) => {
+  const handleMenu = (event: SyntheticEvent) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -53,7 +53,7 @@ export const Navbar = () => {
               aria-label="account of current user"
               aria-controls="menu-appbar"
               aria-haspopup="true"
-              onClick={handleMenu}
+              onClick={(event: SyntheticEvent) => handleMenu(event)}
               color="inherit">
               <AccountCircle />
             </IconButton>
