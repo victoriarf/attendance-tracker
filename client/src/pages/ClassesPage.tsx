@@ -47,16 +47,15 @@ function ClassesPage() {
     setActiveUser(newValue);
   }
 
-  // @ts-expect-error // TODO: fix later
-  const initialCheckedState = JSON.parse(localStorage.getItem(CLASSES_CHECKED_KEY)) || {};
-  const [checkedState, setCheckedState] = useState(initialCheckedState);
+  const checkedClasses = localStorage.getItem(CLASSES_CHECKED_KEY);
+  const initialCheckedState = (checkedClasses && JSON.parse(checkedClasses)) || {};
+  const [checkedState, setCheckedState] = useState<Record<string, boolean>>(initialCheckedState);
 
   useEffect(() => {
     localStorage.setItem(CLASSES_CHECKED_KEY, JSON.stringify(checkedState));
   }, [checkedState]);
 
   const handleCheckboxChange = (classId: string) => {
-    // @ts-expect-error // TODO: add type later
     setCheckedState(prevState => {
       return {
         ...prevState,
