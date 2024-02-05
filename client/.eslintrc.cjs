@@ -46,6 +46,8 @@ module.exports = {
       "warn",
       {"vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_"}
     ],
+    "react/prop-types": "off",
+    "no-console": "warn"
     // "sort-imports": [
     //   "error",
     //   {
