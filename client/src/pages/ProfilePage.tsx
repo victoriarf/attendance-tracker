@@ -1,33 +1,23 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useQuery } from 'react-query';
-import { addUser, getUsers, removeUser } from '../api/usersApi';
-import {
-  Box,
-  Button,
-  Container,
-  Dialog,
-  DialogTitle,
-  IconButton,
-  Tab,
-  TextField,
-} from '@mui/material';
+import { getUsers, removeUser } from '../api/usersApi';
+import { Button, Container, IconButton, Tab } from '@mui/material';
 import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import './ProfilePage.scss';
 import { TabContext, TabList } from '@mui/lab';
+import AddStudentDialog from '../components/dialogs/AddStudentDialog';
 
 function ProfilePage() {
   const [activeUserId, setActiveUser] = useState<string | null>('');
 
   const [editStudentsMode, setEditStudentsMode] = useState(false);
-  const [newStudentName, setNewStudentName] = useState('');
-  const [newUserDialogOpen, newUserDialogSetOpen] = useState(false);
 
   const { data: users, refetch: refetchUsers } = useQuery('users', () => getUsers());
-  const newUserDialogRef = useRef<HTMLDivElement | null>(null);
+  const [newUserDialogOpen, newUserDialogSetOpen] = useState(false);
 
   useEffect(() => {
     if (!activeUserId && users && users[0]) {
@@ -37,17 +27,6 @@ function ProfilePage() {
 
   function onAddStudentPressed() {
     newUserDialogSetOpen(true);
-  }
-
-  function addStudent(name: string) {
-    addUser(name).then(() => {
-      newUserDialogSetOpen(false);
-      refetchUsers();
-    });
-  }
-
-  function handleNewUserDialogClose() {
-    newUserDialogSetOpen(false);
   }
 
   function removeStudent(id: string) {
@@ -111,36 +90,10 @@ function ProfilePage() {
         </div>
       </Container>
 
-      {/* New Student/User Name */}
-      <Dialog
-        onClose={handleNewUserDialogClose}
+      <AddStudentDialog
+        refetchUsers={refetchUsers}
         open={newUserDialogOpen}
-        ref={node => {
-          newUserDialogRef.current = node;
-        }}>
-        <DialogTitle> Please enter a student name </DialogTitle>
-        <TextField
-          value={newStudentName}
-          onChange={ev => setNewStudentName(ev.target.value)}
-          label="Name"
-          variant="standard"
-          sx={{ m: 2 }}
-        />
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          gap={4}
-          marginBottom="20px"
-          marginTop="20px">
-          <Button onClick={() => addStudent(newStudentName)} variant="contained">
-            Confirm
-          </Button>
-          <Button onClick={handleNewUserDialogClose} variant="outlined">
-            Cancel
-          </Button>
-        </Box>
-      </Dialog>
+        setOpen={newUserDialogSetOpen}></AddStudentDialog>
     </>
   );
 }
