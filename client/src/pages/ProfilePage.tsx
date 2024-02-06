@@ -10,6 +10,7 @@ import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 import './ProfilePage.scss';
 import { TabContext, TabList } from '@mui/lab';
 import AddStudentDialog from '../components/dialogs/AddStudentDialog';
+import ConfirmationDialog from '../components/dialogs/ConfirmationDialog';
 
 function ProfilePage() {
   const [activeUserId, setActiveUser] = useState<string | null>('');
@@ -18,6 +19,8 @@ function ProfilePage() {
 
   const { data: users, refetch: refetchUsers } = useQuery('users', () => getUsers());
   const [newUserDialogOpen, newUserDialogSetOpen] = useState(false);
+  const [deleteUserDialogOpen, deleteUserDialogSetOpen] = useState(false);
+  const [deleteUserId, deleteUserSetId] = useState<string | null>(null);
 
   useEffect(() => {
     if (!activeUserId && users && users[0]) {
@@ -25,12 +28,23 @@ function ProfilePage() {
     }
   }, [activeUserId, users]);
 
+  function confirmDeleteUser() {
+    if (!deleteUserId) {
+      return;
+    }
+
+    removeUser(deleteUserId).then(() => refetchUsers());
+    deleteUserSetId(null);
+    deleteUserDialogSetOpen(false);
+  }
+
   function onAddStudentPressed() {
     newUserDialogSetOpen(true);
   }
 
-  function removeStudent(id: string) {
-    removeUser(id).then(() => refetchUsers());
+  function onRemoveStudentClicked(id: string) {
+    deleteUserDialogSetOpen(true);
+    deleteUserSetId(id);
   }
 
   return (
@@ -70,7 +84,7 @@ function ProfilePage() {
                         <Tab key={user._id} label={user.name} value={user._id} />
                         {editStudentsMode && (
                           <IconButton
-                            onClick={() => removeStudent(user._id)}
+                            onClick={() => onRemoveStudentClicked(user._id)}
                             key={user._id + 'icon'}
                             size="small"
                             edge="start"
@@ -94,6 +108,12 @@ function ProfilePage() {
         refetchUsers={refetchUsers}
         open={newUserDialogOpen}
         setOpen={newUserDialogSetOpen}></AddStudentDialog>
+
+      <ConfirmationDialog
+        title="Are you sure you want to delete user?"
+        open={deleteUserDialogOpen}
+        setOpen={deleteUserDialogSetOpen}
+        confirmAction={() => confirmDeleteUser()}></ConfirmationDialog>
     </>
   );
 }
