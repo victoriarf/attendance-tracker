@@ -4,7 +4,7 @@ import { useQuery } from 'react-query';
 import { getUsers, removeUser } from '../api/usersApi';
 import { Box, Button, Container, IconButton, Tab, Typography } from '@mui/material';
 import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
-import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import './ProfilePage.scss';
@@ -100,21 +100,27 @@ function ProfilePage() {
                   onChange={(_, newValue) => setActiveUser(newValue)}
                   color="primary">
                   {users?.map((user: { _id: string; name: string }) => (
-                    <span key={user._id}>
-                      <Tab key={user._id} label={user.name} value={user._id} />
-                      {editStudentsMode && (
-                        <IconButton
-                          onClick={() => onRemoveStudentClicked(user._id)}
-                          key={user._id + 'icon'}
-                          size="small"
-                          edge="start"
-                          color="inherit"
-                          aria-label="menu"
-                          sx={{ mr: 2 }}>
-                          <DeleteOutlineOutlinedIcon color="action" />
-                        </IconButton>
-                      )}
-                    </span>
+                    <Tab
+                      key={user._id}
+                      label={
+                        <div className={'row'}>
+                          {user.name}
+                          {editStudentsMode && (
+                            <IconButton
+                              onClick={() => onRemoveStudentClicked(user._id)}
+                              key={user._id + 'icon'}
+                              size="small"
+                              edge="start"
+                              color="inherit"
+                              aria-label="menu"
+                              sx={{ mr: 2 }}>
+                              <DeleteOutlineOutlinedIcon color="action" />
+                            </IconButton>
+                          )}
+                        </div>
+                      }
+                      value={user._id}
+                    />
                   ))}
                 </TabList>
 
