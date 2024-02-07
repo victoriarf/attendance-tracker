@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { SyntheticEvent, useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useQuery } from 'react-query';
 import { getUsers, removeUser } from '../api/usersApi';
-import { Button, Container, IconButton, Tab } from '@mui/material';
+import { Box, Button, Container, IconButton, Tab, Typography } from '@mui/material';
 import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 import './ProfilePage.scss';
-import { TabContext, TabList } from '@mui/lab';
+import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AddStudentDialog from '../components/dialogs/AddStudentDialog';
 import ConfirmationDialog from '../components/dialogs/ConfirmationDialog';
 
@@ -16,6 +16,7 @@ function ProfilePage() {
   const [activeUserId, setActiveUser] = useState<string | null>('');
 
   const [editStudentsMode, setEditStudentsMode] = useState(false);
+  const [activeColor, setActiveColor] = useState('#3d94d6');
 
   const { data: users, refetch: refetchUsers } = useQuery('users', () => getUsers());
   const [newUserDialogOpen, newUserDialogSetOpen] = useState(false);
@@ -26,6 +27,8 @@ function ProfilePage() {
     if (!activeUserId && users && users[0]) {
       setActiveUser(users[0]._id);
     }
+
+    console.log('activeUserId', activeUserId);
   }, [activeUserId, users]);
 
   function confirmDeleteUser() {
@@ -36,6 +39,14 @@ function ProfilePage() {
     removeUser(deleteUserId).then(() => refetchUsers());
     deleteUserSetId(null);
     deleteUserDialogSetOpen(false);
+  }
+
+  function onColorChange(event: SyntheticEvent) {
+    console.log(event);
+    // @ts-expect-error //todo
+    console.log(event.target.value);
+    // @ts-expect-error //todo
+    setActiveColor(event.target.value);
   }
 
   function onAddStudentPressed() {
@@ -52,27 +63,37 @@ function ProfilePage() {
       <Navbar></Navbar>
 
       <Container component="main" maxWidth="md" sx={{ mt: 4 }}>
-        <h2>Profile</h2>
+        <h2>
+          Profile
+          <IconButton
+            onClick={() => setEditStudentsMode(!editStudentsMode)}
+            size="small"
+            edge="start"
+            aria-label="menu"
+            sx={{ ml: 2 }}>
+            <EditOutlinedIcon className="editIcon" />
+          </IconButton>
+        </h2>
 
-        <div className="container">
+        <Box className="row" sx={{ mb: 3 }}>
+          <p> It is possible to change the color or double click to rename </p>
+          <div>
+            Select color
+            <input type="color" value={activeColor} onChange={event => onColorChange(event)} />
+          </div>
+        </Box>
+
+        <Box className="container">
           {activeUserId && (
             <>
-              <IconButton
-                onClick={() => setEditStudentsMode(!editStudentsMode)}
-                size="small"
-                edge="start"
-                aria-label="menu"
-                sx={{ mr: 2 }}>
-                <EditOutlinedIcon className="editIcon" />
-              </IconButton>
+              <Box className={'row'}>
+                <Typography component="h4"> Students </Typography>
 
-              {editStudentsMode && (
                 <Button onClick={() => onAddStudentPressed()}>
-                  <PersonAddSharpIcon color="action" sx={{ mr: 2 }} />
-                  <span> Add </span>
+                  <PersonAddSharpIcon color="action" sx={{ mr: 1 }} />
+                  <span> Add student</span>
                 </Button>
-              )}
-
+              </Box>
               <TabContext value={activeUserId}>
                 <TabList
                   variant="scrollable"
@@ -80,28 +101,37 @@ function ProfilePage() {
                   color="primary">
                   {users?.map((user: { _id: string; name: string }) => (
                     <span key={user._id}>
-                      <>
-                        <Tab key={user._id} label={user.name} value={user._id} />
-                        {editStudentsMode && (
-                          <IconButton
-                            onClick={() => onRemoveStudentClicked(user._id)}
-                            key={user._id + 'icon'}
-                            size="small"
-                            edge="start"
-                            color="inherit"
-                            aria-label="menu"
-                            sx={{ mr: 2 }}>
-                            <DeleteOutlineOutlinedIcon color="action" />
-                          </IconButton>
-                        )}
-                      </>
+                      <Tab key={user._id} label={user.name} value={user._id} />
+                      {editStudentsMode && (
+                        <IconButton
+                          onClick={() => onRemoveStudentClicked(user._id)}
+                          key={user._id + 'icon'}
+                          size="small"
+                          edge="start"
+                          color="inherit"
+                          aria-label="menu"
+                          sx={{ mr: 2 }}>
+                          <DeleteOutlineOutlinedIcon color="action" />
+                        </IconButton>
+                      )}
                     </span>
                   ))}
                 </TabList>
+
+                <TabPanel value={activeUserId}>
+                  <Box className={'row'}>
+                    <Typography component="h4"> Classes </Typography>
+
+                    <Button onClick={() => onAddStudentPressed()}>
+                      <PersonAddSharpIcon color="action" sx={{ mr: 1 }} />
+                      <span> Add class</span>
+                    </Button>
+                  </Box>
+                </TabPanel>
               </TabContext>
             </>
           )}
-        </div>
+        </Box>
       </Container>
 
       <AddStudentDialog
