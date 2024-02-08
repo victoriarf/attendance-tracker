@@ -1,4 +1,4 @@
-import React, { SyntheticEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useQuery } from 'react-query';
 import { getUsers, removeUser } from '../api/usersApi';
@@ -12,8 +12,9 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AddStudentDialog from '../components/dialogs/AddStudentDialog';
 import ConfirmationDialog from '../components/dialogs/ConfirmationDialog';
 import { UserClass } from '../interfaces/class.interface';
-import { getUserClasses } from '../api/classesApi';
+import { getUserClasses, updateUserClass } from '../api/classesApi';
 import ClassButton from '../components/buttons/ClassButton';
+import { prepareClassData } from '../api/classes-transform-api';
 
 // TODO: export interface
 interface TabUser {
@@ -32,7 +33,7 @@ function ProfilePage() {
   const [deleteUserDialogOpen, deleteUserDialogSetOpen] = useState(false);
   const [deleteUserId, deleteUserSetId] = useState<string | null>(null);
 
-  const { data: classes } = useQuery(
+  const { data: classes, refetch: refetchClasses } = useQuery(
     ['classes', activeUserId],
     () => activeUserId && getUserClasses(activeUserId),
     {
@@ -44,8 +45,6 @@ function ProfilePage() {
     if (!activeUserId && users && users[0]) {
       setActiveUser(users[0]._id);
     }
-
-    console.log('activeUserId', activeUserId);
   }, [activeUserId, users]);
 
   function confirmDeleteUser() {
@@ -58,11 +57,7 @@ function ProfilePage() {
     deleteUserDialogSetOpen(false);
   }
 
-  function onColorChange(event: SyntheticEvent) {
-    console.log(event);
-    // @ts-expect-error //todo
-    console.log(event.target.value);
-    // @ts-expect-error //todo
+  function onColorChange(event: React.ChangeEvent<HTMLInputElement>) {
     setActiveColor(event.target.value);
   }
 
@@ -77,6 +72,13 @@ function ProfilePage() {
   function onRemoveStudentClicked(id: string): void {
     deleteUserDialogSetOpen(true);
     deleteUserSetId(id);
+  }
+
+  function renameUserClass(classId: string, name: string) {
+    const classData = prepareClassData({ name });
+    updateUserClass(classId, classData).then(() => {
+      refetchClasses();
+    });
   }
 
   return (
@@ -158,7 +160,11 @@ function ProfilePage() {
                     <Stack direction="column" justifyContent="start" spacing={1}>
                       {classes?.map((userClass: UserClass) => (
                         <Box key={userClass.name}>
-                          <ClassButton userClass={userClass} />
+                          <ClassButton
+                            userClass={userClass}
+                            allowRename={editStudentsMode}
+                            onRename={(name: string) => renameUserClass(userClass._id, name)}
+                          />
                         </Box>
                       ))}
                     </Stack>

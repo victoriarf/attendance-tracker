@@ -2,8 +2,8 @@ const ClassModel = require('../../models/class.model');
 
 module.exports = async (req, res) => {
   try {
-    const {id} = req.params;
-    const {name, payment = false, price, schedule} = req.body;
+    const { id } = req.params;
+    const { name, payment = false, price, schedule } = req.body;
 
     const userClass = await ClassModel.findById(id);
     if (!!name) {
@@ -19,7 +19,7 @@ module.exports = async (req, res) => {
 
       userClass.price = {
         amount: price.amount,
-        recurring: price.recurring
+        recurring: price.recurring,
       };
     }
 
@@ -32,6 +32,4 @@ module.exports = async (req, res) => {
   } catch (e) {
     console.log('Error updating class ', e);
   }
-
 };
-
