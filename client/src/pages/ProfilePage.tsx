@@ -2,7 +2,7 @@ import React, { SyntheticEvent, useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useQuery } from 'react-query';
 import { getUsers, removeUser } from '../api/usersApi';
-import { Box, Button, Container, IconButton, Tab, Typography } from '@mui/material';
+import { Box, Button, Container, IconButton, Stack, Tab, Typography } from '@mui/material';
 import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutline';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -11,6 +11,15 @@ import './ProfilePage.scss';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import AddStudentDialog from '../components/dialogs/AddStudentDialog';
 import ConfirmationDialog from '../components/dialogs/ConfirmationDialog';
+import { UserClass } from '../interfaces/class.interface';
+import { getUserClasses } from '../api/classesApi';
+import ClassButton from '../components/buttons/ClassButton';
+
+// TODO: export interface
+interface TabUser {
+  _id: string;
+  name: string;
+}
 
 function ProfilePage() {
   const [activeUserId, setActiveUser] = useState<string | null>('');
@@ -22,6 +31,14 @@ function ProfilePage() {
   const [newUserDialogOpen, newUserDialogSetOpen] = useState(false);
   const [deleteUserDialogOpen, deleteUserDialogSetOpen] = useState(false);
   const [deleteUserId, deleteUserSetId] = useState<string | null>(null);
+
+  const { data: classes } = useQuery(
+    ['classes', activeUserId],
+    () => activeUserId && getUserClasses(activeUserId),
+    {
+      enabled: !!activeUserId,
+    }
+  );
 
   useEffect(() => {
     if (!activeUserId && users && users[0]) {
@@ -49,11 +66,15 @@ function ProfilePage() {
     setActiveColor(event.target.value);
   }
 
-  function onAddStudentPressed() {
+  function onAddStudentPressed(): void {
     newUserDialogSetOpen(true);
   }
 
-  function onRemoveStudentClicked(id: string) {
+  function onAddClassPressed(): void {
+    newUserDialogSetOpen(true);
+  }
+
+  function onRemoveStudentClicked(id: string): void {
     deleteUserDialogSetOpen(true);
     deleteUserSetId(id);
   }
@@ -99,7 +120,7 @@ function ProfilePage() {
                   variant="scrollable"
                   onChange={(_, newValue) => setActiveUser(newValue)}
                   color="primary">
-                  {users?.map((user: { _id: string; name: string }) => (
+                  {users?.map((user: TabUser) => (
                     <Tab
                       key={user._id}
                       label={
@@ -124,16 +145,25 @@ function ProfilePage() {
                   ))}
                 </TabList>
 
-                <TabPanel value={activeUserId}>
-                  <Box className={'row'}>
-                    <Typography component="h4"> Classes </Typography>
+                <Box className={'row'}>
+                  <Typography component="h4"> Classes </Typography>
+                  <Button onClick={() => onAddClassPressed()}>
+                    <PersonAddSharpIcon color="action" sx={{ mr: 1 }} />
+                    <span> Add a class</span>
+                  </Button>
+                </Box>
 
-                    <Button onClick={() => onAddStudentPressed()}>
-                      <PersonAddSharpIcon color="action" sx={{ mr: 1 }} />
-                      <span> Add class</span>
-                    </Button>
-                  </Box>
-                </TabPanel>
+                {users.map((user: TabUser) => (
+                  <TabPanel key={user._id} value={user._id}>
+                    <Stack direction="column" justifyContent="start" spacing={1}>
+                      {classes?.map((userClass: UserClass) => (
+                        <Box key={userClass.name}>
+                          <ClassButton userClass={userClass} />
+                        </Box>
+                      ))}
+                    </Stack>
+                  </TabPanel>
+                ))}
               </TabContext>
             </>
           )}

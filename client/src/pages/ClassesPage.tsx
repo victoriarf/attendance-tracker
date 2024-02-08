@@ -6,7 +6,7 @@ import { useQuery } from 'react-query';
 import { getUserClasses } from '../api/classesApi';
 import { getUsers } from '../api/usersApi';
 import Calendar from '../components/Calendar';
-import ClassButton from '../components/Class-button';
+import ClassButtonWithCheckbox from '../components/buttons/ClassButtonWithCheckbox';
 import './ClassesPage.scss';
 import ClassInfo from '../components/Class-info';
 import Navbar from '../components/Navbar';
@@ -99,7 +99,7 @@ function ClassesPage() {
                           spacing={0}>
                           {classes?.map((userClass: UserClass) => (
                             <Box key={userClass.name}>
-                              <ClassButton
+                              <ClassButtonWithCheckbox
                                 userClass={userClass}
                                 isChecked={checkedState[userClass._id] || false}
                                 onCheckboxChange={() => handleCheckboxChange(userClass._id)}

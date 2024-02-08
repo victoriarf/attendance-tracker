@@ -1,4 +1,3 @@
-import { useRef } from 'react';
 import { Box, Button, Dialog, DialogTitle } from '@mui/material';
 import React from 'react';
 
@@ -11,19 +10,12 @@ interface ConfirmationDialogProps {
 }
 
 function ConfirmationDialog(props: ConfirmationDialogProps) {
-  const newUserDialogRef = useRef<HTMLDivElement | null>(null);
-
   function handleClose() {
     props.setOpen(false);
   }
 
   return (
-    <Dialog
-      onClose={handleClose}
-      open={props.open}
-      ref={node => {
-        newUserDialogRef.current = node;
-      }}>
+    <Dialog onClose={handleClose} open={props.open}>
       <DialogTitle> {props.title} </DialogTitle>
 
       <Box

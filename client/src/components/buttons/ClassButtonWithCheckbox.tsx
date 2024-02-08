@@ -1,6 +1,7 @@
 import React from 'react';
-import { Button, Checkbox, FormControlLabel } from '@mui/material';
-import './Class-button.css';
+import { Checkbox, FormControlLabel } from '@mui/material';
+import ClassButton from './ClassButton';
+import './ClassButtonWithCheckbox.scss';
 
 interface ClassButtonProps {
   userClass: {
@@ -10,13 +11,10 @@ interface ClassButtonProps {
   onCheckboxChange: () => void;
 }
 
-export const ClassButton = (props: ClassButtonProps) => {
+export const ClassButtonWithCheckbox = (props: ClassButtonProps) => {
   return (
-    <React.Fragment>
-      <Button className="classButton" variant="contained" size={'medium'}>
-        {' '}
-        {props.userClass.name}
-      </Button>
+    <>
+      <ClassButton userClass={props.userClass}></ClassButton>
       <FormControlLabel
         className="classCheckboxLabel"
         control={<Checkbox color="default" className="classCheckbox" size="medium" />}
@@ -24,8 +22,8 @@ export const ClassButton = (props: ClassButtonProps) => {
         checked={props.isChecked}
         onChange={props.onCheckboxChange}
       />
-    </React.Fragment>
+    </>
   );
 };
 
-export default ClassButton;
+export default ClassButtonWithCheckbox;

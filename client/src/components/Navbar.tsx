@@ -4,7 +4,6 @@ import { AppBar, Button, IconButton, Menu, MenuItem, Toolbar, Typography } from 
 import MenuIcon from '@mui/icons-material/Menu';
 import { useNavigate } from 'react-router-dom';
 
-import './Class-button.css';
 import { AuthContext } from '../AuthContext.jsx';
 
 export const Navbar = () => {

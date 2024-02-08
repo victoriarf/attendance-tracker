@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useState } from 'react';
 import { addUser } from '../../api/usersApi';
 import { Box, Button, Dialog, DialogTitle, TextField } from '@mui/material';
 import React from 'react';
@@ -12,8 +12,6 @@ interface AddStudentDialogProps {
 function AddStudentDialog(props: AddStudentDialogProps) {
   const [newStudentName, setNewStudentName] = useState('');
 
-  const newUserDialogRef = useRef<HTMLDivElement | null>(null);
-
   function addStudent(name: string) {
     addUser(name).then(() => {
       props.setOpen(false);
@@ -26,12 +24,7 @@ function AddStudentDialog(props: AddStudentDialogProps) {
   }
 
   return (
-    <Dialog
-      onClose={handleNewUserDialogClose}
-      open={props.open}
-      ref={node => {
-        newUserDialogRef.current = node;
-      }}>
+    <Dialog onClose={handleNewUserDialogClose} open={props.open}>
       <DialogTitle> Please enter a student name </DialogTitle>
       <TextField
         value={newStudentName}
