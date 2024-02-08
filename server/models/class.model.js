@@ -14,7 +14,7 @@ const ClassSchema = new mongoose.Schema({
       type: String,
       enum: ['monthly', 'individual'], // 'per-session'
       required: true,
-    }
+    },
   },
   lastPayment: {
     type: Date,
@@ -36,7 +36,19 @@ const ClassSchema = new mongoose.Schema({
       },
     },
   ],
-})
+  settings: {
+    type: Object,
+    required: false,
+    color: {
+      type: String,
+      required: false,
+    },
+    order: {
+      type: Number,
+      required: false,
+    },
+  },
+});
 
 const ClassModel = mongoose.model('Class', ClassSchema);
 module.exports = ClassModel;
