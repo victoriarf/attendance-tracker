@@ -32,9 +32,12 @@ export const ClassButton = (props: ClassButtonProps) => {
   }
 
   function exitRename(ev: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) {
-    setCLassName(ev.target.value);
     setIsRenameMode(false);
-    props.onRename && props.onRename(className);
+    setCLassName(ev.target.value);
+
+    if (props.userClass.name !== ev.target.value) {
+      props.onRename && props.onRename(className);
+    }
   }
 
   return (
