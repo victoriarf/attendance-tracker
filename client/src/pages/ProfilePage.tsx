@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useQuery } from 'react-query';
-import { getUsers, removeUser } from '../api/usersApi';
+import { addUser, getUsers, removeUser } from '../api/usersApi';
 import { Box, Button, Container, IconButton, Stack, Tab, Typography } from '@mui/material';
 import PersonAddSharpIcon from '@mui/icons-material/PersonAddSharp';
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutline';
@@ -57,6 +57,17 @@ function ProfilePage() {
     deleteUserDialogSetOpen(false);
   }
 
+  function confirmAddUser(name: string) {
+    addUser(name)
+      .then(() => {
+        newUserDialogSetOpen(false);
+        return refetchUsers();
+      })
+      .then(({ data }) => {
+        data?.length && setActiveUser(data[data.length - 1]?._id);
+      });
+  }
+
   function onColorChange(event: React.ChangeEvent<HTMLInputElement>) {
     setActiveColor(event.target.value);
   }
@@ -69,7 +80,11 @@ function ProfilePage() {
     newUserDialogSetOpen(true);
   }
 
-  function onRemoveStudentClicked(id: string): void {
+  function onRemoveStudentClicked(
+    ev: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>,
+    id: string
+  ): void {
+    ev.stopPropagation();
     deleteUserDialogSetOpen(true);
     deleteUserSetId(id);
   }
@@ -130,7 +145,7 @@ function ProfilePage() {
                           {user.name}
                           {editStudentsMode && (
                             <IconButton
-                              onClick={() => onRemoveStudentClicked(user._id)}
+                              onClick={ev => onRemoveStudentClicked(ev, user._id)}
                               key={user._id + 'icon'}
                               size="small"
                               edge="start"
@@ -177,9 +192,9 @@ function ProfilePage() {
       </Container>
 
       <AddStudentDialog
-        refetchUsers={refetchUsers}
         open={newUserDialogOpen}
-        setOpen={newUserDialogSetOpen}></AddStudentDialog>
+        setOpen={newUserDialogSetOpen}
+        confirmAction={(userName: string) => confirmAddUser(userName)}></AddStudentDialog>
 
       <ConfirmationDialog
         title="Are you sure you want to delete user?"

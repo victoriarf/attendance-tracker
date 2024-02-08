@@ -1,30 +1,22 @@
 import { useState } from 'react';
-import { addUser } from '../../api/usersApi';
 import { Box, Button, Dialog, DialogTitle, TextField } from '@mui/material';
 import React from 'react';
 
 interface AddStudentDialogProps {
-  refetchUsers: () => void;
   open: boolean;
   setOpen: (arg: boolean) => void;
+  confirmAction: (arg: string) => void;
 }
 
 function AddStudentDialog(props: AddStudentDialogProps) {
   const [newStudentName, setNewStudentName] = useState('');
 
-  function addStudent(name: string) {
-    addUser(name).then(() => {
-      props.setOpen(false);
-      props.refetchUsers();
-    });
-  }
-
-  function handleNewUserDialogClose() {
+  function handleClose() {
     props.setOpen(false);
   }
 
   return (
-    <Dialog onClose={handleNewUserDialogClose} open={props.open}>
+    <Dialog onClose={handleClose} open={props.open}>
       <DialogTitle> Please enter a student name </DialogTitle>
       <TextField
         value={newStudentName}
@@ -40,10 +32,10 @@ function AddStudentDialog(props: AddStudentDialogProps) {
         gap={4}
         marginBottom="20px"
         marginTop="20px">
-        <Button onClick={() => addStudent(newStudentName)} variant="contained">
+        <Button onClick={() => props.confirmAction(newStudentName)} variant="contained">
           Confirm
         </Button>
-        <Button onClick={handleNewUserDialogClose} variant="outlined">
+        <Button onClick={handleClose} variant="outlined">
           Cancel
         </Button>
       </Box>
