@@ -134,7 +134,7 @@ function ProfilePage() {
                               edge="start"
                               color="inherit"
                               aria-label="menu"
-                              sx={{ mr: 2 }}>
+                              sx={{ mr: 2, pt: 0, pb: 0 }}>
                               <DeleteOutlineOutlinedIcon color="action" />
                             </IconButton>
                           )}
