@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, DateObject } from 'react-multi-date-picker';
-import './Calendar.scss';
 
 interface MapDaysProps {
   style?: React.CSSProperties;
@@ -61,14 +60,14 @@ function CalendarComponent() {
   };
 
   return (
-    <div className="classes-calendar">
+    <div className="styles.classesCalendar">
       <Calendar
         value={selectedDates}
         onChange={handleDatesChange}
         multiple
         numberOfMonths={1}
         onMonthChange={handleMonthChange}
-        className="attendance-calendar"
+        className="styles.attendanceCalendar"
         mapDays={({ date, isSameDate }) => {
           const props: MapDaysProps = {};
           missedDates.map(day => {

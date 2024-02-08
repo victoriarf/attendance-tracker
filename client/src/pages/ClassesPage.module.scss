@@ -5,6 +5,8 @@
   max-width: 1600px;
 }
 
-.classesList.MuiStack-root {
-   margin-top: 15px;
+.classesList{
+  &:global(.MuiStack-root) {
+    margin-top: 15px;
+  }
 }

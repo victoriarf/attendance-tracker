@@ -1,6 +1,6 @@
 import React from 'react';
 import { Button } from '@mui/material';
-import './ClassButton.scss';
+import styles from './ClassButton.module.scss';
 
 interface ClassButtonProps {
   userClass: {
@@ -11,7 +11,7 @@ interface ClassButtonProps {
 export const ClassButton = (props: ClassButtonProps) => {
   return (
     <React.Fragment>
-      <Button className="classButton" variant="contained" size={'medium'}>
+      <Button className={styles.classButton} variant="contained" size={'medium'}>
         {' '}
         {props.userClass.name}
       </Button>

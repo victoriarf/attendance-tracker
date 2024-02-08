@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox, FormControlLabel } from '@mui/material';
 import ClassButton from './ClassButton';
-import './ClassButtonWithCheckbox.scss';
+import styles from './ClassButtonWithCheckbox.module.scss';
 
 interface ClassButtonProps {
   userClass: {
@@ -16,8 +16,8 @@ export const ClassButtonWithCheckbox = (props: ClassButtonProps) => {
     <>
       <ClassButton userClass={props.userClass}></ClassButton>
       <FormControlLabel
-        className="classCheckboxLabel"
-        control={<Checkbox color="default" className="classCheckbox" size="medium" />}
+        className={styles.classCheckboxLabel}
+        control={<Checkbox color="default" className={styles.classCheckbox} size="medium" />}
         label=""
         checked={props.isChecked}
         onChange={props.onCheckboxChange}

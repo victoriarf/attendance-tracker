@@ -1,7 +1,7 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
 import React from 'react';
-import './Class-info.scss';
 import { Recurring, UserClass } from '../interfaces/class.interface';
+import styles from './ClassInfo.module.scss';
 
 interface ClassInfoProps {
   userClass: UserClass;
@@ -19,15 +19,15 @@ function ClassInfo(props: ClassInfoProps) {
   }
 
   return (
-    <div className="classInfo">
-      <div className="classNameRow">
-        <strong className="className"> {props.userClass.name} </strong>
+    <div className={styles.classInfo}>
+      <div className={styles.classNameRow}>
+        <strong className={styles.className}> {props.userClass.name} </strong>
         <FormControlLabel control={<Checkbox />} label={getPaymentLabel()} />
       </div>
 
       <div>
         <div>
-          <strong className="label">Price:</strong>
+          <strong className={styles.label}>Price:</strong>
         </div>
         <strong> {props.userClass.price?.amount} uah</strong>
         {setPriceRecurring(props.userClass.price?.recurring)}
@@ -35,12 +35,12 @@ function ClassInfo(props: ClassInfoProps) {
 
       {/* Schedule */}
       {props.userClass.schedule?.length > 0 && (
-        <div className="schedule">
-          <strong className="label"> Shedule: </strong>
+        <div className={styles.schedule}>
+          <strong className={styles.label}> Shedule: </strong>
           {props.userClass.schedule.map(el => (
-            <div key={el._id} className="schedule-record">
-              <div className="day"> {el.day} </div>
-              <div className="time">{el?.time}</div>
+            <div key={el._id} className={styles.scheduleRecord}>
+              <div className={styles.day}> {el.day} </div>
+              <div className={styles.time}>{el?.time}</div>
             </div>
           ))}
         </div>

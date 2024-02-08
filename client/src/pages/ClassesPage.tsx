@@ -7,8 +7,8 @@ import { getUserClasses } from '../api/classesApi';
 import { getUsers } from '../api/usersApi';
 import Calendar from '../components/Calendar';
 import ClassButtonWithCheckbox from '../components/buttons/ClassButtonWithCheckbox';
-import './ClassesPage.scss';
-import ClassInfo from '../components/Class-info';
+import styles from './ClassesPage.module.scss';
+import ClassInfo from '../components/ClassInfo';
 import Navbar from '../components/Navbar';
 import { UserClass } from '../interfaces/class.interface';
 
@@ -69,7 +69,7 @@ function ClassesPage() {
       <Navbar />
 
       {isLoading ? (
-        <p className="loading"> Loading... </p>
+        <p className={styles.loading}> Loading... </p>
       ) : (
         <div>
           <Stack direction="column" justifyContent="center" alignItems="center" spacing={0.5}>
@@ -88,12 +88,12 @@ function ClassesPage() {
                   {users?.map((user: TabUser) => (
                     <TabPanel key={user._id} value={user._id}>
                       <Stack
-                        className="classesPage"
+                        className={styles.classesPage}
                         direction="row"
                         justifyContent="start"
                         spacing={5}>
                         <Stack
-                          className="classesList"
+                          className={styles.classesList}
                           direction="column"
                           justifyContent="start"
                           spacing={0}>
