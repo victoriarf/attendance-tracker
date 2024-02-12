@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import Navbar from '../components/Navbar';
 import { useQuery } from 'react-query';
 import { addUser, getUsers, removeUser } from '../api/usersApi';
@@ -47,7 +47,7 @@ function ProfilePage() {
     }
   }, [activeUserId, users]);
 
-  function confirmDeleteUser() {
+  const confirmDeleteUser = () => {
     if (!deleteUserId) {
       return;
     }
@@ -55,9 +55,9 @@ function ProfilePage() {
     removeUser(deleteUserId).then(() => refetchUsers());
     deleteUserSetId(null);
     deleteUserDialogSetOpen(false);
-  }
+  };
 
-  function confirmAddUser(name: string) {
+  const confirmAddUser = (name: string) => {
     addUser(name)
       .then(() => {
         newUserDialogSetOpen(false);
@@ -66,35 +66,38 @@ function ProfilePage() {
       .then(({ data }) => {
         data?.length && setActiveUser(data[data.length - 1]?._id);
       });
-  }
+  };
 
-  function onColorChange(event: React.ChangeEvent<HTMLInputElement>) {
+  const onColorChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setActiveColor(event.target.value);
-  }
+  };
 
-  function onAddStudentPressed(): void {
+  const onAddStudentPressed = () => {
     newUserDialogSetOpen(true);
-  }
+  };
 
-  function onAddClassPressed(): void {
+  const onAddClassPressed = () => {
     newUserDialogSetOpen(true);
-  }
+  };
 
-  function onRemoveStudentClicked(
+  const onRemoveStudentClicked = (
     ev: React.MouseEvent<HTMLAnchorElement> | React.MouseEvent<HTMLButtonElement>,
     id: string
-  ): void {
+  ) => {
     ev.stopPropagation();
     deleteUserDialogSetOpen(true);
     deleteUserSetId(id);
-  }
+  };
 
-  function renameUserClass(classId: string, name: string) {
-    const classData = prepareClassData({ name });
-    updateUserClass(classId, classData).then(() => {
-      refetchClasses();
-    });
-  }
+  const renameUserClass = useCallback(
+    (classId: string, name: string) => {
+      const classData = prepareClassData({ name });
+      updateUserClass(classId, classData).then(() => {
+        refetchClasses();
+      });
+    },
+    [updateUserClass, refetchClasses]
+  );
 
   return (
     <>
