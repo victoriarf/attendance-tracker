@@ -11,6 +11,7 @@ interface ClassButtonProps {
 }
 
 export const ClassButton = (props: ClassButtonProps) => {
+  console.log('ClassButton re rendering', props.userClass.name);
   const [className, setCLassName] = useState<string>('');
   const [isRenameMode, setIsRenameMode] = useState<boolean>();
 
@@ -62,4 +63,4 @@ export const ClassButton = (props: ClassButtonProps) => {
   );
 };
 
-export default ClassButton;
+export default React.memo(ClassButton);
