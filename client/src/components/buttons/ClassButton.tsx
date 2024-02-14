@@ -7,7 +7,9 @@ interface ClassButtonProps {
     name: string;
   };
   allowRename?: boolean;
+  isActive: boolean;
   onRename?: (className: string) => void;
+  onClick?: () => void;
 }
 
 export const ClassButton = (props: ClassButtonProps) => {
@@ -44,10 +46,11 @@ export const ClassButton = (props: ClassButtonProps) => {
   return (
     <React.Fragment>
       <Button
-        className={styles.classButton}
+        className={`${styles.classButton} ${props.isActive && styles.active}`}
         variant="contained"
         size={'medium'}
-        onDoubleClick={() => rename()}>
+        onDoubleClick={() => rename()}
+        onClick={() => props.onClick && props.onClick()}>
         {' '}
         {!isRenameMode && props.userClass.name}
         {isRenameMode && (

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Calendar, DateObject } from 'react-multi-date-picker';
+import { isSameMonth } from 'date-fns';
 
 interface MapDaysProps {
   style?: React.CSSProperties;
@@ -12,11 +13,12 @@ interface MapDaysProps {
  * onFocusedDateChange always will receive latest focused date value, even if user deselect first selected.
  * 2 - onFocusedDateChange will receive undefined when presses same value again
  */
-function CalendarComponent() {
+function CalendarComponent(props: { onAttendanceChange: (value: number) => void }) {
   const DATE_FORMAT = 'DD/MM/YYYY';
 
   const [selectedDates, setSelectedDates] = useState<DateObject[]>([]);
   const [missedDates, setMissedDates] = useState<DateObject[]>([]);
+  const [displayedMonth, setDisplayedMonth] = useState<Date>(new Date());
 
   useEffect(() => {
     console.log(
@@ -29,8 +31,16 @@ function CalendarComponent() {
     );
   }, [selectedDates, missedDates]);
 
+  const attendedThisMonth = selectedDates.filter((date: DateObject) => {
+    return isSameMonth(date.toDate(), displayedMonth);
+  });
+
+  useEffect(() => {
+    props.onAttendanceChange(attendedThisMonth.length);
+  }, [attendedThisMonth]);
+
   const handleMonthChange = (newDate: DateObject) => {
-    console.log(newDate, 'handle month change');
+    setDisplayedMonth(newDate.toDate());
   };
 
   function findMissingElement(initialArray: DateObject[], newArray: DateObject[]) {
@@ -79,6 +89,13 @@ function CalendarComponent() {
           return props;
         }}
       />
+      <p> This month Selected dates: </p>
+      {attendedThisMonth.map((date, index) => (
+        <li key={index}>
+          {' '}
+          <span>DATE:</span> {date.format(DATE_FORMAT)}{' '}
+        </li>
+      ))}
     </div>
   );
 }

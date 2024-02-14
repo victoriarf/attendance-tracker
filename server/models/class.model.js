@@ -36,6 +36,16 @@ const ClassSchema = new mongoose.Schema({
       },
     },
   ],
+  attendance: {
+    attended: {
+      type: Array,
+      required: false,
+    },
+    missed: {
+      type: Array,
+      required: false,
+    },
+  },
   settings: {
     type: Object,
     required: false,

@@ -1,5 +1,16 @@
+$blue: #1976d2;
+$buttonBg: $blue;
+$transformedColor: adjust-hue($buttonBg, -50deg);
+
 button.classButton {
   border-radius: 18px;
   padding: 5px 15px;
   min-width: 150px;
+
+  &.active {
+    background-color: rgba($buttonBg, 0.6);
+    border-color: $buttonBg;
+    border: 1px solid $buttonBg;
+    background-image: linear-gradient(to right, $buttonBg 0%,  $transformedColor  130%);
+  }
 }

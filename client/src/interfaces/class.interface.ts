@@ -1,11 +1,15 @@
 export interface UserClass {
   _id: string;
   name: string;
-  price?: {
+  price: {
     amount: string;
     recurring: Recurring;
   };
   schedule: ClassSchedule[];
+  attendance: {
+    attended: Array<Date>;
+    missed: Array<Date>;
+  };
 }
 
 export interface ClassSchedule {

@@ -26,8 +26,10 @@ interface TabUser {
  */
 function ClassesPage() {
   const [activeUserId, setActiveUser] = useState<string | null>('');
-
   const { isLoading, data: users } = useQuery('users', () => getUsers());
+
+  const [activeClass, setActiveClass] = useState<TabUser | null>(null);
+  const [attendedThisMonth, setAttendedThisMonth] = useState<number>(0);
 
   useEffect(() => {
     if (!activeUserId && users && users[0]) {
@@ -42,6 +44,10 @@ function ClassesPage() {
       enabled: !!activeUserId,
     }
   );
+
+  useEffect(() => {
+    classes?.length > 0 && setActiveClass(classes[0]);
+  }, [classes]);
 
   function onUserChanged(newValue: string) {
     setActiveUser(newValue);
@@ -62,6 +68,10 @@ function ClassesPage() {
         [classId]: !prevState[classId] || false,
       };
     });
+  };
+
+  const handleClassClicked = (userClass: TabUser) => {
+    setActiveClass(userClass);
   };
 
   return (
@@ -96,13 +106,15 @@ function ClassesPage() {
                           className={styles.classesList}
                           direction="column"
                           justifyContent="start"
-                          spacing={0}>
+                          spacing={1}>
                           {classes?.map((userClass: UserClass) => (
                             <Box key={userClass.name}>
                               <ClassButtonWithCheckbox
+                                isActive={userClass === activeClass}
                                 userClass={userClass}
                                 isChecked={checkedState[userClass._id] || false}
                                 onCheckboxChange={() => handleCheckboxChange(userClass._id)}
+                                onClick={() => handleClassClicked(userClass)}
                               />
                             </Box>
                           ))}
@@ -110,13 +122,18 @@ function ClassesPage() {
 
                         <Box>
                           {' '}
-                          <Calendar />{' '}
+                          <Calendar
+                            onAttendanceChange={(value: number) => setAttendedThisMonth(value)}
+                          />{' '}
                         </Box>
                         <Box>
                           {' '}
                           {classes?.map((userClass: UserClass) =>
                             checkedState[userClass._id] ? (
-                              <ClassInfo key={userClass._id} userClass={userClass}></ClassInfo>
+                              <ClassInfo
+                                key={userClass._id}
+                                userClass={userClass}
+                                attendedThisMonth={attendedThisMonth}></ClassInfo>
                             ) : (
                               ''
                             )
