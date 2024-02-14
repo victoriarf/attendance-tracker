@@ -43,6 +43,7 @@ function ProfilePage() {
     }
   );
 
+  // TODO: set in useQuery success callback
   useEffect(() => {
     if (!activeUserId && users && users[0]) {
       setActiveUser(users[0]._id);

@@ -55,6 +55,7 @@ export const ClassButton = (props: ClassButtonProps) => {
         {!isRenameMode && props.userClass.name}
         {isRenameMode && (
           <InputBase
+            className={styles.buttonInput}
             inputRef={(node: HTMLInputElement) => (classInput.current = node)}
             onBlur={exitRename}
             value={className}
