@@ -28,6 +28,8 @@ function ProfilePage() {
   const [editStudentsMode, setEditStudentsMode] = useState(false);
   const [activeColor, setActiveColor] = useState('#3d94d6');
 
+  const [activeClass, setActiveClass] = useState<TabUser | null>(null);
+
   const { data: users, refetch: refetchUsers } = useQuery('users', () => getUsers());
   const [newUserDialogOpen, newUserDialogSetOpen] = useState(false);
   const [deleteUserDialogOpen, deleteUserDialogSetOpen] = useState(false);
@@ -46,6 +48,10 @@ function ProfilePage() {
       setActiveUser(users[0]._id);
     }
   }, [activeUserId, users]);
+
+  useEffect(() => {
+    classes?.length > 0 && setActiveClass(classes[0]);
+  }, [classes]);
 
   const confirmDeleteUser = () => {
     if (!deleteUserId) {
@@ -182,6 +188,8 @@ function ProfilePage() {
                             userClass={userClass}
                             allowRename={editStudentsMode}
                             onRename={(name: string) => renameUserClass(userClass._id, name)}
+                            isActive={userClass == activeClass}
+                            onClick={() => setActiveClass(userClass)}
                           />
                         </Box>
                       ))}
