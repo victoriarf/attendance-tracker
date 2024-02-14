@@ -7,6 +7,7 @@ import LoginPage from './pages/LoginPage';
 import PageNotFound from './pages/PageNotFound';
 import ProfilePage from './pages/ProfilePage';
 import { Navigate, Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { DemoPage } from './pages/Demo/DemoPage';
 
 function App() {
   const { userValue } = useContext(AuthContext);
@@ -28,6 +29,7 @@ function App() {
             />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/profile" element={<ProfilePage />} />
+            <Route path="/demo" element={<DemoPage />} />
             <Route path="*" element={<PageNotFound />} />
           </Routes>
         </Router>
