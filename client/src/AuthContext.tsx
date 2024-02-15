@@ -1,17 +1,13 @@
-import React, {
-  createContext,
-  useEffect,
-  useState,
-  ReactNode,
-  Dispatch,
-  SetStateAction,
-} from 'react';
+import React, { createContext, useEffect, useState, ReactNode } from 'react';
 
 import { User } from 'firebase/auth';
 
+export const AUTH_USER_KEY = 'activeUser';
+export const AUTH_STORAGE_EVENT = 'storage';
+
 export interface AuthContextType {
   userValue: User | undefined;
-  setUserValue: Dispatch<SetStateAction<User | undefined>>;
+  setUserValue: (user: User | undefined) => void;
 }
 
 interface AuthContextProviderProps {
@@ -26,11 +22,44 @@ export const AuthContext = createContext<AuthContextType>({
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
   const [userValue, setUserValue] = useState<User | undefined>(undefined); // Update the type accordingly
 
+  const onUserValueSet = (user: User | undefined) => {
+    if (!user) {
+      localStorage.removeItem(AUTH_USER_KEY);
+      window.dispatchEvent(new Event(AUTH_STORAGE_EVENT));
+      setUserValue(undefined);
+      return;
+    }
+
+    localStorage.setItem(AUTH_USER_KEY, JSON.stringify(user));
+    window.dispatchEvent(new Event(AUTH_STORAGE_EVENT));
+    setUserValue(user);
+  };
+
+  const getUserFromStorage = () => {
+    const storedUser = localStorage.getItem(AUTH_USER_KEY);
+
+    if (storedUser) {
+      setUserValue(JSON.parse(storedUser));
+    } else {
+      setUserValue(undefined);
+    }
+  };
+
   useEffect(() => {
-    console.log('userValue', userValue);
-  }, [userValue]);
+    getUserFromStorage();
+
+    window.addEventListener(AUTH_STORAGE_EVENT, () => {
+      getUserFromStorage();
+    });
+
+    return () => {
+      window.removeEventListener('AUTH_USER_KEY', () => {});
+    };
+  }, []);
 
   return (
-    <AuthContext.Provider value={{ userValue, setUserValue }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ userValue, setUserValue: onUserValueSet }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
