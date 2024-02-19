@@ -11,8 +11,7 @@ import styles from './ClassesPage.module.scss';
 import ClassInfo from '../components/ClassInfo';
 import Navbar from '../components/Navbar';
 import { UserClass } from '../interfaces/class.interface';
-
-const CLASSES_CHECKED_KEY = 'classesChecked';
+import useCheckedClasses from '../hooks/useCheckedClasses';
 
 interface TabUser {
   _id: string;
@@ -30,6 +29,8 @@ function ClassesPage() {
 
   const [activeClass, setActiveClass] = useState<TabUser | null>(null);
   const [attendedThisMonth, setAttendedThisMonth] = useState<number>(0);
+
+  const { checkedState, handleCheckboxChange } = useCheckedClasses();
 
   useEffect(() => {
     if (!activeUserId && users && users[0]) {
@@ -52,23 +53,6 @@ function ClassesPage() {
   function onUserChanged(newValue: string) {
     setActiveUser(newValue);
   }
-
-  const checkedClasses = localStorage.getItem(CLASSES_CHECKED_KEY);
-  const initialCheckedState = (checkedClasses && JSON.parse(checkedClasses)) || {};
-  const [checkedState, setCheckedState] = useState<Record<string, boolean>>(initialCheckedState);
-
-  useEffect(() => {
-    localStorage.setItem(CLASSES_CHECKED_KEY, JSON.stringify(checkedState));
-  }, [checkedState]);
-
-  const handleCheckboxChange = (classId: string) => {
-    setCheckedState(prevState => {
-      return {
-        ...prevState,
-        [classId]: !prevState[classId] || false,
-      };
-    });
-  };
 
   const handleClassClicked = (userClass: TabUser) => {
     setActiveClass(userClass);
