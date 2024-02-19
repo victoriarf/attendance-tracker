@@ -135,7 +135,18 @@ function ClassesPage() {
                                 userClass={userClass}
                                 attendedThisMonth={attendedThisMonth}></ClassInfo>
                             ) : (
-                              ''
+                              <ClassInfo
+                                key={userClass._id}
+                                attendedThisMonth={attendedThisMonth}
+                                userClass={userClass}>
+                                <div>
+                                  <p>
+                                    {' '}
+                                    This class is not checked! Please check to see the dates on the
+                                    calendar{' '}
+                                  </p>
+                                </div>
+                              </ClassInfo>
                             )
                           )}
                         </Box>

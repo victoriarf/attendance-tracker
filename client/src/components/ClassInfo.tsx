@@ -1,11 +1,12 @@
 import { Checkbox, FormControlLabel } from '@mui/material';
-import React, { useEffect, useState } from 'react';
+import React, { ReactElement, useEffect, useState } from 'react';
 import { Recurring, UserClass } from '../interfaces/class.interface';
 import styles from './ClassInfo.module.scss';
 
 interface ClassInfoProps {
   userClass: UserClass;
   attendedThisMonth: number;
+  children?: ReactElement;
 }
 
 function ClassInfo(props: ClassInfoProps) {
@@ -42,7 +43,6 @@ function ClassInfo(props: ClassInfoProps) {
         <strong className={styles.className}> {props.userClass.name} </strong>
         <FormControlLabel control={<Checkbox />} label={getPaymentLabel()} />
       </div>
-
       <div>
         <div>
           <strong className={styles.label}>Price:</strong>
@@ -50,9 +50,7 @@ function ClassInfo(props: ClassInfoProps) {
         <strong> {props.userClass.price?.amount} uah</strong>
         {setPriceRecurring(props.userClass.price?.recurring)}
       </div>
-
       <div>This month total: {currentMonthTotal}</div>
-
       {/* Schedule */}
       {props.userClass.schedule?.length > 0 && (
         <div className={styles.schedule}>
@@ -65,6 +63,8 @@ function ClassInfo(props: ClassInfoProps) {
           ))}
         </div>
       )}
+
+      {props.children}
     </div>
   );
 }
