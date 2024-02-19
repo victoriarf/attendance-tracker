@@ -1,13 +1,15 @@
 import './App.css';
-import React, { StrictMode } from 'react';
+import React, { lazy, StrictMode, Suspense } from 'react';
 import ErrorBoundary from './ErrorBoundary';
 import ClassesPage from './pages/ClassesPage.jsx';
 import LoginPage from './pages/LoginPage';
 import PageNotFound from './pages/PageNotFound';
-import ProfilePage from './pages/ProfilePage';
 import { Route, BrowserRouter, Routes } from 'react-router-dom';
-import { DemoPage } from './pages/Demo/DemoPage';
 import ProtectedRoutes from './protectedRoutes';
+import Loading from './components/Loading';
+
+const ProfilePage = lazy(() => import('./pages/ProfilePage'));
+const DemoPage = lazy(() => import('./pages/Demo/DemoPage'));
 
 function App() {
   return (
@@ -22,8 +24,22 @@ function App() {
               </Route>
 
               <Route path="/login" element={<LoginPage />} />
-              <Route path="/profile" element={<ProfilePage />} />
-              <Route path="/demo" element={<DemoPage />} />
+              <Route
+                path="/profile"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <ProfilePage />{' '}
+                  </Suspense>
+                }
+              />
+              <Route
+                path="/demo"
+                element={
+                  <Suspense fallback={<Loading />}>
+                    <DemoPage />
+                  </Suspense>
+                }
+              />
               <Route path="*" element={<PageNotFound />} />
             </Routes>
           </BrowserRouter>

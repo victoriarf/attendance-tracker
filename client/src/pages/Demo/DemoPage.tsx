@@ -2,10 +2,11 @@ import React from 'react';
 import { EmailForm } from './components/EmailForm';
 import Navbar from '../../components/Navbar';
 import { Box, Container, Typography } from '@mui/material';
+import styles from './DemoPage.module.scss';
 
-export const DemoPage = () => {
+const DemoPage = () => {
   return (
-    <>
+    <div className={styles.demoPage}>
       <Navbar></Navbar>
 
       <Container component="main" maxWidth="xs" sx={{ mt: 4 }}>
@@ -24,7 +25,13 @@ export const DemoPage = () => {
         </Box>
 
         <EmailForm></EmailForm>
+
+        <Typography component="h2" variant="h5">
+          Compound component
+        </Typography>
       </Container>
-    </>
+    </div>
   );
 };
+
+export default DemoPage;
