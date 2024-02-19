@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { StrictMode } from 'react';
 import ErrorBoundary from './ErrorBoundary';
 import ClassesPage from './pages/ClassesPage.jsx';
 import LoginPage from './pages/LoginPage';
@@ -12,21 +12,23 @@ import ProtectedRoutes from './protectedRoutes';
 function App() {
   return (
     <>
-      <ErrorBoundary fallback="Error Fallback">
-        <BrowserRouter>
-          <Routes>
-            <Route element={<ProtectedRoutes />}>
-              <Route path="/" element={<ClassesPage />}></Route>
-              <Route path="/classes" element={<ClassesPage />}></Route>
-            </Route>
+      <StrictMode>
+        <ErrorBoundary fallback="Error Fallback">
+          <BrowserRouter>
+            <Routes>
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/" element={<ClassesPage />}></Route>
+                <Route path="/classes" element={<ClassesPage />}></Route>
+              </Route>
 
-            <Route path="/login" element={<LoginPage />} />
-            <Route path="/profile" element={<ProfilePage />} />
-            <Route path="/demo" element={<DemoPage />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </ErrorBoundary>
+              <Route path="/login" element={<LoginPage />} />
+              <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/demo" element={<DemoPage />} />
+              <Route path="*" element={<PageNotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </ErrorBoundary>
+      </StrictMode>
     </>
   );
 }
