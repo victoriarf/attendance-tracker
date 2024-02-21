@@ -54,7 +54,14 @@ function CalendarComponent(props: { onAttendanceChange: (value: number) => void 
     });
   }
 
+  function findRepeatedElement(missed: DateObject[], selected: DateObject[]) {
+    return missed.find(el =>
+      selected.some(selected => selected.format(DATE_FORMAT) === el.format(DATE_FORMAT))
+    );
+  }
+
   const handleDatesChange = (dates: DateObject[]) => {
+    let newSelectedDates = dates;
     // 1) User deselects a date -> add to missing
     if (dates.length < selectedDates.length) {
       const deselectedDates = findMissingElement(selectedDates, dates);
@@ -62,11 +69,16 @@ function CalendarComponent(props: { onAttendanceChange: (value: number) => void 
         setMissedDates([...missedDates, ...deselectedDates]);
       }
     } else {
-      const reselected = findMissingElement(missedDates, dates);
-      setMissedDates(reselected);
+      // User selects a date -> check if need to remove from missing
+      const unselectedElement = findRepeatedElement(missedDates, dates);
+      if (unselectedElement) {
+        const newMissedDates = missedDates.filter(el => el !== unselectedElement);
+        setMissedDates(newMissedDates);
+        newSelectedDates = selectedDates.filter(el => el !== unselectedElement);
+      }
     }
 
-    setSelectedDates(dates);
+    setSelectedDates(newSelectedDates);
   };
 
   return (
