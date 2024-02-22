@@ -15,7 +15,7 @@ interface ClassDays {
 type CalendarDays = Record<string, ClassDays>;
 
 interface CalendarDatesAction {
-  className: string;
+  workingClass: string;
   dates: DateObject[];
   type: EventTypes;
   date: DateObject | undefined;
@@ -45,7 +45,7 @@ function CalendarComponent(props: { onAttendanceChange: (value: number) => void 
   };
 
   const datesReducer = (state: CalendarDays, action: CalendarDatesAction): CalendarDays => {
-    const classDates = state['painting'];
+    const classDates = state[action.workingClass];
     let newSelectedDates = action.dates;
     let newMissedDates = classDates.missedDates;
 
@@ -59,7 +59,7 @@ function CalendarComponent(props: { onAttendanceChange: (value: number) => void 
     }
 
     return {
-      painting: {
+      [action.workingClass]: {
         selectedDates: newSelectedDates,
         missedDates: newMissedDates,
       },
@@ -108,7 +108,7 @@ function CalendarComponent(props: { onAttendanceChange: (value: number) => void 
       !!date && (type = EventTypes.Unselected);
     }
 
-    updateCalendarDates({ className: 'painting', dates, type, date });
+    updateCalendarDates({ workingClass: 'painting', dates, type, date });
   };
 
   return (
