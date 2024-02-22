@@ -17,6 +17,14 @@ type CalendarDays = Record<string, ClassDays>;
 interface CalendarDatesAction {
   className: string;
   dates: DateObject[];
+  type: EventTypes;
+  date: DateObject | undefined;
+}
+
+enum EventTypes {
+  Missed = 'Missed',
+  Selected = 'Selected',
+  Unselected = 'Unselected',
 }
 
 /**
@@ -37,23 +45,17 @@ function CalendarComponent(props: { onAttendanceChange: (value: number) => void 
   };
 
   const datesReducer = (state: CalendarDays, action: CalendarDatesAction): CalendarDays => {
-    let newSelectedDates = action.dates;
     const classDates = state['painting'];
+    let newSelectedDates = action.dates;
     let newMissedDates = classDates.missedDates;
 
-    // 1) User deselects a date -> add to missing
-    if (action.dates.length < classDates.selectedDates.length) {
-      const deselectedDates = findMissingElement(classDates.selectedDates, action.dates);
-      if (deselectedDates.length > 0) {
-        newMissedDates = [...classDates.missedDates, ...deselectedDates];
-      }
-    } else {
-      // 2) User selects a date -> check if needed to remove from missing
-      const unselectedElement = findRepeatedElement(classDates.missedDates, action.dates);
-      if (unselectedElement) {
-        newMissedDates = classDates.missedDates.filter(el => el !== unselectedElement);
-        newSelectedDates = classDates.selectedDates.filter(el => el !== unselectedElement);
-      }
+    if (action.type === EventTypes.Missed) {
+      newMissedDates = [...classDates.missedDates, action.date!];
+    }
+
+    if (action.type === EventTypes.Unselected) {
+      newMissedDates = classDates.missedDates.filter(el => el !== action.date);
+      newSelectedDates = classDates.selectedDates.filter(el => el !== action.date);
     }
 
     return {
@@ -82,14 +84,9 @@ function CalendarComponent(props: { onAttendanceChange: (value: number) => void 
   };
 
   function findMissingElement(initialArray: DateObject[], newArray: DateObject[]) {
-    return initialArray.filter(el => {
-      const found = newArray.reduce((acc: string[], current: DateObject) => {
-        el.format(DATE_FORMAT) === current.format(DATE_FORMAT) &&
-          acc.push(current.format(DATE_FORMAT));
-        return acc;
-      }, []);
-      return !found.includes(el.format(DATE_FORMAT));
-    });
+    return initialArray.find(
+      el => !newArray.some(current => el.format(DATE_FORMAT) === current.format(DATE_FORMAT))
+    );
   }
 
   function findRepeatedElement(missed: DateObject[], selected: DateObject[]) {
@@ -99,7 +96,19 @@ function CalendarComponent(props: { onAttendanceChange: (value: number) => void 
   }
 
   const handleDatesChange = (dates: DateObject[]) => {
-    updateCalendarDates({ className: 'painting', dates: dates });
+    const classDates = calendarDates.painting;
+    let type = EventTypes.Selected;
+    let date;
+
+    if (dates.length < classDates.selectedDates.length) {
+      date = findMissingElement(classDates.selectedDates, dates);
+      !!date && (type = EventTypes.Missed);
+    } else {
+      date = findRepeatedElement(classDates.missedDates, dates);
+      !!date && (type = EventTypes.Unselected);
+    }
+
+    updateCalendarDates({ className: 'painting', dates, type, date });
   };
 
   return (
