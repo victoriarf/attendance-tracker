@@ -25,18 +25,16 @@ interface TabUser {
  */
 function ClassesPage() {
   const [activeUserId, setActiveUser] = useState<string | null>('');
-  const { isLoading, data: users } = useQuery('users', () => getUsers());
+  const { isLoading, data: users } = useQuery('users', () => getUsers(), {
+    onSuccess: users => {
+      setActiveUser(users[0]._id);
+    },
+  });
 
   const [activeClass, setActiveClass] = useState<TabUser | null>(null);
   const [attendedThisMonth, setAttendedThisMonth] = useState<number>(0);
 
   const { checkedState, handleCheckboxChange } = useCheckedClasses();
-
-  useEffect(() => {
-    if (!activeUserId && users && users[0]) {
-      setActiveUser(users[0]._id);
-    }
-  }, [activeUserId, users]);
 
   const { data: classes } = useQuery(
     ['classes', activeUserId],

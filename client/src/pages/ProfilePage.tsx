@@ -30,7 +30,12 @@ function ProfilePage() {
 
   const [activeClass, setActiveClass] = useState<TabUser | null>(null);
 
-  const { data: users, refetch: refetchUsers } = useQuery('users', () => getUsers());
+  const { data: users, refetch: refetchUsers } = useQuery('users', () => getUsers(), {
+    onSuccess: users => {
+      setActiveUser(users[0]._id);
+    },
+  });
+
   const [newUserDialogOpen, newUserDialogSetOpen] = useState(false);
   const [deleteUserDialogOpen, deleteUserDialogSetOpen] = useState(false);
   const [deleteUserId, deleteUserSetId] = useState<string | null>(null);
@@ -40,9 +45,6 @@ function ProfilePage() {
     () => activeUserId && getUserClasses(activeUserId),
     {
       enabled: !!activeUserId,
-      onSuccess: users => {
-        setActiveUser(users[0]._id);
-      },
     }
   );
 
