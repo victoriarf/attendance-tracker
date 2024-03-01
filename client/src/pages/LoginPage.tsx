@@ -15,9 +15,9 @@ import { useNavigate } from 'react-router-dom';
 import * as Yup from 'yup';
 import { loginWithEmailAndPassword, registerWithEmailAndPassword } from '../api/profileApi';
 import { AuthContext } from '../AuthContext';
-import Navbar from '../components/Navbar';
 import { auth } from '../firebase';
 import { User, UserCredential } from 'firebase/auth';
+import WrapperWithNavbar from '../components/WrapperWithNavbar';
 
 function LoginPage() {
   const { userValue, setUserValue } = useContext(AuthContext);
@@ -74,9 +74,7 @@ function LoginPage() {
   });
 
   return (
-    <>
-      <Navbar></Navbar>
-
+    <WrapperWithNavbar>
       <Container component="main" maxWidth="xs" sx={{ mt: 4 }}>
         <Typography component="h1" variant="h5">
           {isSignInMode ? 'Sign In' : 'Sign Up'}
@@ -146,7 +144,7 @@ function LoginPage() {
           </Grid>
         </Box>
       </Container>
-    </>
+    </WrapperWithNavbar>
   );
 }
 

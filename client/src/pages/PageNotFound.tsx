@@ -1,14 +1,14 @@
-import React from "react";
-import Navbar from "../components/Navbar";
+import React from 'react';
+import WrapperWithNavbar from '../components/WrapperWithNavbar';
 
 function PageNotFound() {
   return (
     <>
-      <Navbar></Navbar>
-
-      <h2> Page Not Found </h2>
+      <WrapperWithNavbar>
+        <h2> Page Not Found </h2>
+      </WrapperWithNavbar>
     </>
-  )
+  );
 }
 
 export default PageNotFound;

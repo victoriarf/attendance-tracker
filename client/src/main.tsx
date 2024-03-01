@@ -6,6 +6,10 @@ import App from './App.jsx';
 import './index.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { AuthContextProvider } from './AuthContext.jsx';
+import { ThemeProvider as StyledThemeProvider } from 'styled-components';
+
+import theme from './config/theme.config';
+import { CssBaseline, StyledEngineProvider, ThemeProvider } from '@mui/material';
 
 const queryClient = new QueryClient();
 
@@ -16,7 +20,14 @@ rootElement &&
       <QueryClientProvider client={queryClient}>
         <LocalizationProvider dateAdapter={AdapterDateFns}>
           <AuthContextProvider>
-            <App />
+            <StyledEngineProvider injectFirst>
+              <StyledThemeProvider theme={theme}>
+                <ThemeProvider theme={theme}>
+                  <CssBaseline />
+                  <App />
+                </ThemeProvider>
+              </StyledThemeProvider>
+            </StyledEngineProvider>
           </AuthContextProvider>
           {/*<ReactQueryDevtoolsPanel setIsOpen={true} />*/}
         </LocalizationProvider>

@@ -1,5 +1,4 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import Navbar from '../components/Navbar';
 import { useQuery } from 'react-query';
 import { addUser, getUsers, removeUser } from '../api/usersApi';
 import { Box, Button, Container, IconButton, Stack, Tab, Typography } from '@mui/material';
@@ -15,6 +14,7 @@ import { UserClass } from '../interfaces/class.interface';
 import { getUserClasses, updateUserClass } from '../api/classesApi';
 import ClassButton from '../components/buttons/ClassButton';
 import { prepareClassData } from '../api/classes-transform-api';
+import WrapperWithNavbar from '../components/WrapperWithNavbar';
 
 // TODO: export interface
 interface TabUser {
@@ -105,9 +105,7 @@ function ProfilePage() {
   );
 
   return (
-    <>
-      <Navbar></Navbar>
-
+    <WrapperWithNavbar>
       <Container component="main" maxWidth="md" sx={{ mt: 4 }}>
         <h2>
           Profile
@@ -211,7 +209,7 @@ function ProfilePage() {
         open={deleteUserDialogOpen}
         setOpen={deleteUserDialogSetOpen}
         confirmAction={() => confirmDeleteUser()}></ConfirmationDialog>
-    </>
+    </WrapperWithNavbar>
   );
 }
 

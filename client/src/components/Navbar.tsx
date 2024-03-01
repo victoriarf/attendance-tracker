@@ -34,7 +34,11 @@ export const Navbar = () => {
   };
 
   return (
-    <AppBar position={'static'} color="primary" enableColorOnDark>
+    <AppBar
+      position={'fixed'}
+      color="primary"
+      enableColorOnDark
+      sx={{ zIndex: theme => theme.zIndex.drawer + 1 }}>
       <Toolbar>
         <IconButton size="large" edge="start" color="inherit" aria-label="menu" sx={{ mr: 2 }}>
           <MenuIcon />
