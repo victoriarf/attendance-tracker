@@ -1,12 +1,21 @@
 import styles from './ClassesPage.module.scss';
-import { Box, Drawer, List, ListItem, ListItemButton, ListItemText, Tab } from '@mui/material';
-import { TabContext, TabList, TabPanel } from '@mui/lab';
+import {
+  Box,
+  Drawer,
+  Grid,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  Paper,
+} from '@mui/material';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { getUsers } from '../api/usersApi';
 import { Search as SearchIcon } from '@mui/icons-material';
 import { Search, SearchIconWrapper, StyledInputBase } from '../components/search/SearchComponent';
 import WrapperWithNavbar from '../components/WrapperWithNavbar';
+import StudentsExpirations from '../components/StudentsExpirations';
 
 interface TabUser {
   _id: string;
@@ -61,46 +70,20 @@ const StudentsPage = () => {
               </List>
             </Drawer>
 
-            <Search>
-              <SearchIconWrapper>
-                <SearchIcon />
-              </SearchIconWrapper>
-              <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-            </Search>
-          </Box>
-          <Box>
-            {activeUserId && (
-              <TabContext value={activeUserId}>
-                <TabList
-                  orientation="vertical"
-                  onChange={(_, newValue) => onUserChanged(newValue)}
-                  centered
-                  color="primary"
-                  sx={{
-                    flexGrow: 2,
-                    bgcolor: 'background.paper',
-                    display: 'inline-flex',
-                    minWidth: 200,
-                  }}>
-                  {users?.map((user: TabUser) => (
-                    <Tab
-                      key={user._id}
-                      label={user.name}
-                      value={user._id}
-                      sx={{ borderRight: 1, borderColor: 'divider' }}
-                    />
-                  ))}
-                </TabList>
+            <Box>
+              <Search>
+                <SearchIconWrapper>
+                  <SearchIcon />
+                </SearchIconWrapper>
+                <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
+              </Search>
+            </Box>
 
-                <Box sx={{ display: 'inline-flex', flex: 1 }}>
-                  {users?.map((user: TabUser) => (
-                    <TabPanel key={user._id} value={user._id}>
-                      <p> {user.name} </p>
-                    </TabPanel>
-                  ))}
-                </Box>
-              </TabContext>
-            )}
+            <Grid item xs={12}>
+              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                <StudentsExpirations></StudentsExpirations>
+              </Paper>
+            </Grid>
           </Box>
         </>
       )}
