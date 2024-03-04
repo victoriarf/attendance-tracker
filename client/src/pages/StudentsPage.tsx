@@ -2,40 +2,41 @@ import styles from './ClassesPage.module.scss';
 import {
   Box,
   Drawer,
+  FormControl,
   Grid,
   List,
   ListItem,
   ListItemButton,
   ListItemText,
   Paper,
+  Select,
+  InputLabel,
+  MenuItem,
+  TextField,
+  InputAdornment,
+  SelectChangeEvent,
 } from '@mui/material';
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 import { getUsers } from '../api/usersApi';
 import { Search as SearchIcon } from '@mui/icons-material';
-import { Search, SearchIconWrapper, StyledInputBase } from '../components/search/SearchComponent';
 import WrapperWithNavbar from '../components/WrapperWithNavbar';
 import StudentsExpirations from '../components/StudentsExpirations';
-
-interface TabUser {
-  _id: string;
-  name: string;
-}
 
 const drawerWidth = 300; // TODO: move
 const navbarHeightMargin = 8;
 const sidebarItems = ['Attendance', 'Expirations', 'Reminders'];
 
 const StudentsPage = () => {
-  const [activeUserId, setActiveUser] = useState<string | null>('');
+  const [selectedClass, setSelectedClass] = useState<string | null>('');
+
+  // @ts-expect-error //for now
   const { isLoading, data: users } = useQuery('users', () => getUsers(), {
-    onSuccess: users => {
-      setActiveUser(users[0]._id);
-    },
+    onSuccess: () => {},
   });
 
-  function onUserChanged(newValue: string) {
-    setActiveUser(newValue);
+  function handleClassChange(event: SelectChangeEvent) {
+    setSelectedClass((event.target as HTMLSelectElement).value);
   }
 
   return (
@@ -70,20 +71,46 @@ const StudentsPage = () => {
               </List>
             </Drawer>
 
-            <Box>
-              <Search>
-                <SearchIconWrapper>
-                  <SearchIcon />
-                </SearchIconWrapper>
-                <StyledInputBase placeholder="Search…" inputProps={{ 'aria-label': 'search' }} />
-              </Search>
-            </Box>
+            <Box sx={{ width: '100%' }}>
+              <Box
+                sx={{
+                  p: 2,
+                  width: '100%',
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                }}>
+                <TextField
+                  variant={'outlined'}
+                  placeholder={'Search'}
+                  InputProps={{
+                    startAdornment: (
+                      <InputAdornment position="start">
+                        <SearchIcon />
+                      </InputAdornment>
+                    ),
+                  }}></TextField>
 
-            <Grid item xs={12}>
-              <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
-                <StudentsExpirations></StudentsExpirations>
-              </Paper>
-            </Grid>
+                <FormControl sx={{ width: 200 }}>
+                  <InputLabel id="class-label">Select Class</InputLabel>
+                  <Select
+                    labelId="class-label"
+                    id="class"
+                    value={selectedClass}
+                    label="Class"
+                    onChange={handleClassChange}>
+                    <MenuItem value={'1-a Raisins'}>1-a Raisins</MenuItem>
+                    <MenuItem value={'1-b Stars'}>1-b Stars</MenuItem>
+                    <MenuItem value={'1-c Rainbow'}>1-c Rainbow</MenuItem>
+                  </Select>
+                </FormControl>
+              </Box>
+
+              <Grid item xs={12}>
+                <Paper sx={{ p: 2, display: 'flex', flexDirection: 'column' }}>
+                  <StudentsExpirations></StudentsExpirations>
+                </Paper>
+              </Grid>
+            </Box>
           </Box>
         </>
       )}
