@@ -16,7 +16,7 @@ import {
   InputAdornment,
   SelectChangeEvent,
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { ChangeEvent, useState } from 'react';
 import { useQuery } from 'react-query';
 import { getUsers } from '../api/usersApi';
 import { Search as SearchIcon } from '@mui/icons-material';
@@ -28,13 +28,22 @@ const navbarHeightMargin = 8;
 const sidebarItems = ['Attendance', 'Expirations', 'Reminders'];
 
 const StudentsPage = () => {
-  const [selectedClass, setSelectedClass] = useState<string | null>('');
+  const [selectedClass, setSelectedClass] = useState<string | undefined>('');
 
   // @ts-expect-error //for now
   const { isLoading, data: users } = useQuery('users', () => getUsers(), {
     onSuccess: () => {},
   });
 
+  function handleSearch(event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const value = event.target.value;
+    if (!value) return;
+    fetchSearchData(value);
+  }
+
+  function fetchSearchData(value: string) {
+    fetch(`https://api.datamuse.com/words?ml=${value}`, {}).then(res => res.json());
+  }
   function handleClassChange(event: SelectChangeEvent) {
     setSelectedClass((event.target as HTMLSelectElement).value);
   }
@@ -88,7 +97,8 @@ const StudentsPage = () => {
                         <SearchIcon />
                       </InputAdornment>
                     ),
-                  }}></TextField>
+                  }}
+                  onChange={e => handleSearch(e)}></TextField>
 
                 <FormControl sx={{ width: 200 }}>
                   <InputLabel id="class-label">Select Class</InputLabel>
