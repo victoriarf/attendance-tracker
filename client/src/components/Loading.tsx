@@ -8,6 +8,8 @@ const Loading = () => {
         display: 'flex',
         justifyContent: 'center',
         verticalAlign: 'center',
+        alignItems: 'center',
+        height: '100%',
       }}>
       <CircularProgress />
     </Box>
