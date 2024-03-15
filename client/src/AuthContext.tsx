@@ -6,8 +6,8 @@ export const AUTH_USER_KEY = 'activeUser';
 export const AUTH_STORAGE_EVENT = 'storage';
 
 export interface AuthContextType {
-  userValue: User | undefined;
-  setUserValue: (user: User | undefined) => void;
+  userValue: User | undefined | null;
+  setUserValue: (user: User | undefined | null) => void;
 }
 
 interface AuthContextProviderProps {
@@ -20,13 +20,13 @@ export const AuthContext = createContext<AuthContextType>({
 });
 
 export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ children }) => {
-  const [userValue, setUserValue] = useState<User | undefined>(undefined); // Update the type accordingly
+  const [userValue, setUserValue] = useState<User | undefined | null>(undefined); // Update the type accordingly
 
-  const onUserValueSet = (user: User | undefined) => {
+  const onUserValueSet = (user: User | undefined | null) => {
     if (!user) {
       localStorage.removeItem(AUTH_USER_KEY);
       window.dispatchEvent(new Event(AUTH_STORAGE_EVENT));
-      setUserValue(undefined);
+      setUserValue(null);
       return;
     }
 
@@ -41,7 +41,7 @@ export const AuthContextProvider: React.FC<AuthContextProviderProps> = ({ childr
     if (storedUser) {
       setUserValue(JSON.parse(storedUser));
     } else {
-      setUserValue(undefined);
+      setUserValue(null);
     }
   };
 

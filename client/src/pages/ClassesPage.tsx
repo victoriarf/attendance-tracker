@@ -43,6 +43,7 @@ function ClassesPage() {
     onSuccess: users => {
       setActiveUser(users[0]._id);
     },
+    onError: error => console.error('Error', error),
   });
 
   const [activeClass, setActiveClass] = useState<TabUser | null>(null);

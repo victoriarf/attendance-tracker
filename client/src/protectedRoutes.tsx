@@ -8,7 +8,9 @@ const ProtectedRoutes = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    setLoading(!userValue);
+    if (!!userValue || userValue === null) {
+      setLoading(false);
+    }
   }, [userValue]);
 
   return !loading ? userValue ? <Outlet /> : <Navigate to="/login" /> : <Loading></Loading>;
