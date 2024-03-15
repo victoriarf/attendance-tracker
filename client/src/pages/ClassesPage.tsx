@@ -1,13 +1,4 @@
-import {
-  Box,
-  Drawer,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
-  Stack,
-  Tab,
-} from '@mui/material';
+import { Box, Stack, Tab } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { useQuery } from 'react-query';
@@ -21,6 +12,8 @@ import ClassInfo from '../components/ClassInfo';
 import { UserClass } from '../interfaces/class.interface';
 import useCheckedClasses from '../hooks/useCheckedClasses';
 import WrapperWithNavbar from '../components/WrapperWithNavbar';
+import { Sidebar } from '../components/Sidebar';
+import { sidebarItems } from '../constants/sidebarItems';
 
 interface TabUser {
   _id: string;
@@ -33,17 +26,11 @@ interface TabUser {
  * @constructor
  */
 function ClassesPage() {
-  const drawerWidth = 300; // TODO: move
-  const navbarHeightMargin = 8;
-
-  const sidebarItems = ['Attendance', 'Expirations', 'Reminders'];
-  const [drawerOpen] = useState<boolean>(true);
   const [activeUserId, setActiveUser] = useState<string | null>('');
   const { isLoading, data: users } = useQuery('users', () => getUsers(), {
     onSuccess: users => {
       setActiveUser(users[0]._id);
     },
-    onError: error => console.error('Error', error),
   });
 
   const [activeClass, setActiveClass] = useState<TabUser | null>(null);
@@ -77,30 +64,7 @@ function ClassesPage() {
         <p className={styles.loading}> Loading... </p>
       ) : (
         <Box sx={{ display: 'flex' }}>
-          <Drawer
-            variant="permanent"
-            anchor="left"
-            open={drawerOpen}
-            sx={{
-              width: drawerWidth,
-              flexShrink: 0,
-              marginTop: 8,
-              '& .MuiDrawer-paper': {
-                width: drawerWidth,
-                boxSizing: 'border-box',
-                marginTop: navbarHeightMargin,
-              },
-            }}>
-            <List>
-              {sidebarItems.map(text => (
-                <ListItem key={text} disablePadding>
-                  <ListItemButton>
-                    <ListItemText primary={text} />
-                  </ListItemButton>
-                </ListItem>
-              ))}
-            </List>
-          </Drawer>
+          <Sidebar sidebarItems={sidebarItems}></Sidebar>
 
           <Stack direction="column" justifyContent="center" alignItems="center" spacing={0.5}>
             {activeUserId && (

@@ -1,13 +1,8 @@
 import styles from './ClassesPage.module.scss';
 import {
   Box,
-  Drawer,
   FormControl,
   Grid,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemText,
   Paper,
   Select,
   InputLabel,
@@ -22,10 +17,8 @@ import { getUsers } from '../api/usersApi';
 import { Search as SearchIcon } from '@mui/icons-material';
 import WrapperWithNavbar from '../components/WrapperWithNavbar';
 import StudentsExpirations from '../components/StudentsExpirations';
-
-const drawerWidth = 300; // TODO: move
-const navbarHeightMargin = 8;
-const sidebarItems = ['Attendance', 'Expirations', 'Reminders'];
+import { Sidebar } from '../components/Sidebar';
+import { sidebarItems } from '../constants/sidebarItems';
 
 const StudentsPage = () => {
   const [selectedClass, setSelectedClass] = useState<string | undefined>('');
@@ -44,6 +37,7 @@ const StudentsPage = () => {
   function fetchSearchData(value: string) {
     fetch(`https://api.datamuse.com/words?ml=${value}`, {}).then(res => res.json());
   }
+
   function handleClassChange(event: SelectChangeEvent) {
     setSelectedClass((event.target as HTMLSelectElement).value);
   }
@@ -55,30 +49,7 @@ const StudentsPage = () => {
       ) : (
         <>
           <Box sx={{ display: 'flex' }}>
-            <Drawer
-              variant="permanent"
-              anchor="left"
-              open={true}
-              sx={{
-                width: drawerWidth,
-                flexShrink: 0,
-                marginTop: 8,
-                '& .MuiDrawer-paper': {
-                  width: drawerWidth,
-                  boxSizing: 'border-box',
-                  marginTop: navbarHeightMargin,
-                },
-              }}>
-              <List>
-                {sidebarItems.map(text => (
-                  <ListItem key={text} disablePadding>
-                    <ListItemButton>
-                      <ListItemText primary={text} />
-                    </ListItemButton>
-                  </ListItem>
-                ))}
-              </List>
-            </Drawer>
+            <Sidebar sidebarItems={sidebarItems}></Sidebar>
 
             <Box sx={{ width: '100%' }}>
               <Box
